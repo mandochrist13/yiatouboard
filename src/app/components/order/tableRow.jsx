@@ -1,4 +1,4 @@
-// src/app/components/order/TableRow.jsx
+
 import React from 'react';
 import Badge from './Badge';
 import { Icon } from '@iconify/react';

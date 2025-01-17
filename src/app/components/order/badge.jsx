@@ -1,4 +1,4 @@
-// src/app/components/order/Badge.jsx
+
 import React from 'react';
 
 const Badge = ({ status }) => {
