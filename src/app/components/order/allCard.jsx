@@ -1,5 +1,5 @@
 import React from 'react';
-import Card from './Card'; // Assurez-vous que le chemin est correct
+import Card from './card'; // Assurez-vous que le chemin est correct
 
 const AllCards = () => {
     const donneesCartes = [

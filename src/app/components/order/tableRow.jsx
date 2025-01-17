@@ -1,6 +1,6 @@
 
 import React from 'react';
-import Badge from './Badge';
+import Badge from './badge';
 import { Icon } from '@iconify/react';
 
 const TableRow = ({ order }) => (
