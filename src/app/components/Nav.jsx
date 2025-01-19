@@ -9,12 +9,12 @@ export default function Navbar() {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false); // Gestion du menu mobile
 
   return (
-    <div className="container-fluid bg-gray-100 sticky top-0 w-[100%] z-[9999]">
+    <div className="container-fluid bg-[#f7f9fa] sticky top-0 w-full z-[9999]">
       {/* Navbar Header */}
-      <div className="flex justify-around w-[100%] sticky top-0 z-[9999] items-center py-4 bg-white shadow-sm transition-all duration-300 ease-in-out">
+      <div className="flex justify-between  w-full sticky top-0 z-[9999] items-center px-10 py-6  transition-all duration-300 ease-in-out">
         {/* Left Section */}
-        <div className="flex items-center space-x-4">
-          <h4 className="text-1xl font-semibold text-gray-800 uppercase p-2 transition-colors duration-700 hover:text-orange-600">
+        <div className="flex items-center">
+          <h4 className="text-lg font-semibold text-[#707894] uppercase transition-colors duration-700 hover:text-orange-600">
             Bienvenue
           </h4>
         </div>
@@ -44,7 +44,7 @@ export default function Navbar() {
           >
             <Icon
               icon="solar:settings-bold-duotone"
-              className="text-xl align-middle w-6 h-6 transition-transform duration-300 hover:scale-150 hover:rotate-180"
+              className="text-xl text-[#707894] align-middle w-6 h-6 transition-transform duration-300 hover:scale-150 hover:rotate-180"
             />
           </a>
 
@@ -56,7 +56,7 @@ export default function Navbar() {
           >
             <Icon
               icon="solar:clock-circle-bold-duotone"
-              className="text-xl align-middle transition-transform duration-300 hover:scale-150"
+              className="text-xl text-[#707894] align-middle transition-transform duration-300 hover:scale-150"
             />
           </button>
 
@@ -118,7 +118,7 @@ function NotificationMenu({ isOpen, toggleMenu }) {
       >
         <Icon
           icon="solar:bell-bing-bold-duotone"
-          className="text-xl align-middle hover:scale-105"
+          className="text-xl text-[#707894] align-middle hover:scale-105"
         />
         <span className="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
           3
@@ -127,7 +127,7 @@ function NotificationMenu({ isOpen, toggleMenu }) {
       {isOpen && (
         <div className="absolute right-0 mt-2 w-72 bg-white shadow-lg rounded-lg p-3 space-y-2 max-h-72 overflow-y-auto transition-all duration-300">
           <div className="flex justify-between items-center">
-            <h6 className="text-lg font-semibold">Notifications</h6>
+            <h6 className="text-lg text-black font-semibold">Notifications</h6>
             <button className="text-gray-500 text-sm">Clear All</button>
           </div>
           {[1, 2].map((_, idx) => (
@@ -142,7 +142,7 @@ function NotificationMenu({ isOpen, toggleMenu }) {
                 alt="avatar"
               />
               <div>
-                <p className="font-medium">Jacob Gines</p>
+                <p className="text-black font-medium">Jacob Gines</p>
                 <p className="text-sm text-gray-600">
                   A répondu à votre commentaire.
                 </p>
@@ -167,12 +167,12 @@ function UserDropdown({ isOpen, toggleMenu }) {
         aria-expanded={isOpen}
       >
         <Image
-          layout="fill"
-          src="/assets/images/users/avatar-3.jpg"
-          className="w-8 h-8 rounded-full"
+          width={100}
+          height={100}
+          src="/avatar-1.jpg"
+          className="w-8 h-8 rounded-full hover:scale-105"
           alt="avatar"
         />
-        <span className="font-medium text-gray-800">Gaston</span>
       </button>
       {isOpen && (
         <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg p-2 space-y-2 transition-all duration-300">
@@ -208,19 +208,19 @@ function UserDropdown({ isOpen, toggleMenu }) {
 function SearchForm() {
   return (
     <form className="relative flex items-center">
-      <input
-        type="search"
-        className="py-2 px-4 w-full rounded-lg border border-orange-300 focus:outline-none focus:ring-2 focus:ring-orange-600 transition-all duration-300"
-        placeholder="Rechercher..."
-        autoComplete="off"
-      />
       <button
         type="submit"
-        className="absolute top-2 right-2 text-gray-500 hover:text-orange-600"
+        className="absolute top-2 left-1 text-gray-500 "
         aria-label="Search"
       >
         <Icon icon="hugeicons:search-02" width="26" height="26" />
       </button>
+      <input
+        type="search"
+        className="py-2 pl-9 w-full outline-none text-[#000] rounded-lg bg-[#ebe8e8] transition-all duration-300"
+        placeholder="Rechercher..."
+        autoComplete="off"
+      />
     </form>
   );
 }

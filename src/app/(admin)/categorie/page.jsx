@@ -28,25 +28,25 @@ export default function Home() {
     {
       id: "cat1",
       name: "Catégories de Mode",
-      img: "/public/google-remove.png",
+      img: "/p-1.png",
       bgColor: "bg-gray-200",
     },
     {
       id: "cat2",
       name: "Casques Électroniques",
-      img: "/public/google-remove.png",
+      img: "/p-6.png",
       bgColor: "bg-blue-200",
     },
     {
       id: "cat3",
       name: "Chaussures",
-      img: "/public/google-remove.png",
+      img: "/p-7.png",
       bgColor: "bg-yellow-200",
     },
     {
       id: "cat4",
       name: "Lunettes & Solaires",
-      img: "/public/google-remove.png",
+      img: "/p-9.png",
       bgColor: "bg-teal-200",
     },
   ];
@@ -55,7 +55,7 @@ export default function Home() {
     {
       id: "FS16276",
       name: "Mode Hommes, Femmes & Enfants",
-      img: "/public/google-remove.png",
+      img: "/p-1.png",
       price: "$80 à $400",
       createdBy: "Vendeur",
       stock: 46233,
@@ -63,24 +63,24 @@ export default function Home() {
   ];
 
   return (
-    <div className="container mt-2 mx-auto  px-4">
+    <div className="container mt-2 mx-auto  px-10">
       {/* Grid des catégories */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {categories.map((category) => (
           <div
-            className="card shadow-lg hover:scale-105 transform transition-all duration-300 rounded-lg overflow-hidden"
+            className=" shadow-lg transform transition-all duration-300 rounded-lg overflow-hidden"
             key={category.id}
           >
-            <div className="card-body text-center p-4">
+            <div className=" text-center p-4">
               <div
-                className={`${category.bgColor} rounded-full flex items-center justify-center mx-auto p-6 hover:bg-opacity-80 transition-all duration-300`}
+                className={`${category.bgColor} rounded-md flex items-center justify-center mx-auto py-4 transition-all duration-300`}
               >
                 <Image
                   src={category.img}
                   alt={category.name}
-                  height={48}
-                  width={48}
-                  className="object-cover transition-transform transform hover:scale-110"
+                  height={100}
+                  width={100}
+                  className="object-cover transition-transform transform"
                 />
               </div>
               <h4 className="mt-3 mb-0 text-lg font-semibold text-gray-700 transition-all duration-300 hover:text-orange-500">
@@ -94,12 +94,12 @@ export default function Home() {
       {/* Liste des produits */}
       <div className="mt-8">
         <div className="card shadow-lg rounded-lg overflow-hidden">
-          <div className="card-header flex justify-between items-center p-4 bg-gray-100">
-            <h4 className="text-lg font-semibold">Liste de toutes les catégories</h4>
-           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          <div className="w-full flex justify-between items-center p-4 bg-white">
+            <h4 className="text-lg text-black font-semibold">Liste de toutes les catégories</h4>
+           <div className="flex gap-4">
            <a
               href="product-add.html"
-              className="btn bg-orange-600 text-white px-4 py-2 rounded-md hover:scale-110 transition duration-300"
+              className="btn bg-orange-600 text-white px-4 py-2 rounded-md transition duration-300"
             >
               Ajouter un produit
             </a>
@@ -137,14 +137,14 @@ export default function Home() {
           </div>
 
           {/* Table des produits - responsive */}
-          <div className="overflow-x-auto p-4">
+          <div className="overflow-x-auto py-4">
             <table className="min-w-full divide-y divide-gray-200 table-auto">
               <thead className="bg-gray-100">
-                <tr>
-                  <th>
+                <tr className="">
+                  <th className=" px-5">
                     <input type="checkbox" className="form-checkbox" />
                   </th>
-                  <th className="px-4 py-2 text-sm font-semibold text-gray-600">Catégories</th>
+                  <th className="px-4 text-left py-2 text-sm font-semibold text-gray-600">Catégories</th>
                   <th className="px-4 py-2 text-sm font-semibold text-gray-600">Prix de départ</th>
                   <th className="px-4 py-2 text-sm font-semibold text-gray-600">Créé par</th>
                   <th className="px-4 py-2 text-sm font-semibold text-gray-600">ID</th>
@@ -158,7 +158,7 @@ export default function Home() {
                     key={product.id}
                     className="hover:bg-gray-50 transition-all duration-200"
                   >
-                    <td>
+                    <td className="px-5">
                       <input type="checkbox" className="form-checkbox" />
                     </td>
                     <td className="px-4 py-2">
@@ -170,15 +170,15 @@ export default function Home() {
                             width={100}
                             height={100}
                             className="w-12 object-cover transition-transform transform hover:scale-110"
-                          />git 
+                          />
                         </div>
                         <p className="text-gray-800 font-medium text-sm">{product.name}</p>
                       </div>
                     </td>
-                    <td className="px-4 py-2 text-sm">{product.price}</td>
-                    <td className="px-4 py-2 text-sm">{product.createdBy}</td>
-                    <td className="px-4 py-2 text-sm">{product.id}</td>
-                    <td className="px-4 py-2 text-sm">{product.stock}</td>
+                    <td className="px-4 text-center py-2 text-black text-sm">{product.price}</td>
+                    <td className="px-4 py-2 text-black text-sm">{product.createdBy}</td>
+                    <td className="px-4 py-2 text-black text-sm">{product.id}</td>
+                    <td className="px-4 py-2 text-center text-black text-sm">{product.stock}</td>
                     <td className="px-4 py-2 text-sm">
                       <div className="flex gap-2">
                         <a
