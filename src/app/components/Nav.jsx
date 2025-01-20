@@ -207,20 +207,20 @@ function UserDropdown({ isOpen, toggleMenu }) {
 // Search Form
 function SearchForm() {
   return (
-    <form className="relative flex items-center">
+    <form className=" flex items-center">
       <button
         type="submit"
-        className="absolute top-2 left-1 text-gray-500 "
+        className="flex rounded-l-lg bg-[#ebe8e8] p-2 items-center text-gray-500 "
         aria-label="Search"
       >
-        <Icon icon="hugeicons:search-02" width="26" height="26" />
-      </button>
-      <input
+        <Icon icon="hugeicons:search-02" width="24" height="24" className="" />
+      </button><input
         type="search"
-        className="py-2 pl-9 w-full outline-none text-[#000] rounded-lg bg-[#ebe8e8] transition-all duration-300"
+        className="py-2 w-full outline-none text-[#000] rounded-r-lg bg-[#ebe8e8] transition-all duration-300"
         placeholder="Rechercher..."
         autoComplete="off"
       />
+      
     </form>
   );
 }

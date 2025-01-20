@@ -16,13 +16,13 @@ const Link = [
     id: 2,
     href: "/produits",
     icon: <Icon icon="solar:t-shirt-bold-duotone" />,
-    titre: " Products",
+    titre: " Produits",
   },
   {
     id: 3,
     href: "/categorie",
     icon: <Icon icon="solar:clipboard-list-bold-duotone" />,
-    titre: " Category",
+    titre: " Categorie",
   },
   {
     id: 4,
@@ -34,31 +34,31 @@ const Link = [
     id: 5,
     href: "/order",
     icon: <Icon icon="solar:bag-smile-bold-duotone" />,
-    titre: "Orders",
+    titre: "Commande",
   },
-  {
-    id: 6,
-    href: "# ",
-    icon: <Icon icon="solar:card-send-bold-duotone" />,
-    titre: "Purchases",
-  },
-  {
-    id: 7,
-    href: "# ",
-    icon: <Icon icon="solar:confetti-minimalistic-bold-duotone" />,
-    titre: " Attributes",
-  },
-  {
-    id: 8,
-    href: "/roles",
-    icon: <Icon icon="solar:bill-list-bold-duotone" />,
-    titre: "  Invoices",
-  },
+  // {
+  //   id: 6,
+  //   href: "# ",
+  //   icon: <Icon icon="solar:card-send-bold-duotone" />,
+  //   titre: "Purchases",
+  // },
+  // {
+  //   id: 7,
+  //   href: "# ",
+  //   icon: <Icon icon="solar:confetti-minimalistic-bold-duotone" />,
+  //   titre: " Attributes",
+  // },
+  // {
+  //   id: 8,
+  //   href: "/roles",
+  //   icon: <Icon icon="solar:bill-list-bold-duotone" />,
+  //   titre: "  Invoices",
+  // },
   {
     id: 9,
     href: "/parametre",
     icon: <Icon icon="solar:settings-bold-duotone" />,
-    titre: "Settings",
+    titre: "Parametre",
   },
 ];
 

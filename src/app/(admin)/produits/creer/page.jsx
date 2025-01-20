@@ -69,9 +69,9 @@ const ProductCard = () => {
           <div className="flex gap-2 justify-between mt-2">
             {["#EF4444", "#fff", "#3B82F6", "#F59E0B",].map(
               (color, index) => (
-                <div className="bg-gray-300 p-3 rounded-md">
+                <div key={index} className="bg-gray-300 p-3 rounded-md">
                   <div
-                    key={index}
+                    
                     className="w-4 h-4 rounded-full"
                     style={{ backgroundColor: color }}
                   />
