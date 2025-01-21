@@ -26,9 +26,9 @@ const Link = [
   },
   {
     id: 4,
-    href: "# ",
-    icon: <Icon icon="solar:box-bold-duotone" />,
-    titre: "Inventory",
+    href: "/commission",
+    icon: <Icon icon="solar:users-group-two-rounded-bold-duotone" />,
+    titre: "Commission",
   },
   {
     id: 5,
