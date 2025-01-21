@@ -14,9 +14,9 @@ const AllCards = () => {
     ];
 
     return (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 p-4 items-center justify-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 px-8 py-4 items-center justify-center">
             {donneesCartes.map((carte, index) => (
-                <div key={index} className="border-2 p-4 rounded-lg shadow-md hover:bg-gray-200">
+                <div key={index} className="bg-white p-4 rounded-lg">
                     <Card titre={carte.titre} compte={carte.compte} icone={carte.icone} />
                 </div>
             ))}

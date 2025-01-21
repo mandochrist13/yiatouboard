@@ -21,12 +21,12 @@ const OrderList = () => {
 
   return (
 
-        <div className=" flex flex-col p-4">
-          <div className="flex justify-between items-center p-3">
-            <h4 className="text-lg ">Liste des Commandes</h4>
+        <div className=" flex flex-col rounded-md bg-white mx-8 py-4">
+          <div className="flex justify-between border-b pb-4 items-center px-5">
+            <h4 className="text-md text-[#262d35] font-semibold ">Liste des Commandes</h4>
             <div className="relative">
               <button 
-                className="flex flex-cols gap-2 items-center  " 
+                className="flex flex-cols border rounded-lg px-2 text-[#262d35]/60 gap-2 items-center  " 
                 onClick={() => setDropdownOpen(!dropdownOpen)} // Toggle dropdown visibility
               >
                   {filter}

@@ -20,7 +20,7 @@ export function AdminLink({ href, icon, titre }) {
 
     return (
         <li className={`${isActive ? ' border-l-4 !border-[#D5711C]' : ' text-[#5b626e] hover:text-white'} px-7 py-2 `}>
-        <a
+        <Link
           className={`flex items-center justify-center lg:justify-normal ${isActive ? '!text-[#D5711C]' : ' text-[#5b626e] hover:text-white'}  gap-4 `}
           href={href}
         >
@@ -30,7 +30,7 @@ export function AdminLink({ href, icon, titre }) {
           <span className={`hidden lg:flex transition-colors ${isActive ? '!text-[#fff]' : ' text-[#5b626e] hover:text-white'}  duration-300`}>
             {titre}
           </span>
-        </a>
+        </Link>
       </li>
     );
 }

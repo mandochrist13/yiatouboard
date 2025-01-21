@@ -12,7 +12,7 @@ export default function RootLayout({ children }) {
   };
 
   return (
-    <section className="h-screen overflow-hidden">
+    <section className="h-screen bg-[#faf7f7] overflow-hidden">
       <div className="flex h-full">
         {/* Sidebar */}
         {isSidebarVisible && (
