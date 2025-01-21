@@ -35,8 +35,7 @@ const Table = () => {
       allprice: "10.000 fcfa",
       pricepayment: "6.000 fcfa",
       date: "10-01-2025",
-      createdBy: "Vendeur",
-      stock: 46233,
+
     },
   ];
 
