@@ -113,11 +113,11 @@ const TopPagesWithChart = () => {
   return (
     <div className="p-8 flex flex-col gap-10">
        {/* Graphique */}
-      <div className="col-span-1">
-        <canvas ref={chartRef} className="w-[50%]"></canvas>
+      <div className="w-[60%]">
+        <canvas ref={chartRef} className=""></canvas>
       </div>
       {/* Tableau avec filtres */}
-      <div className="col-span-1">
+      <div className="">
         <div className="shadow-md bg-white rounded-lg">
           <div className="flex items-center justify-between p-4 border-b border-gray-200">
             <h4 className="text-lg font-semibold">Global order</h4>
