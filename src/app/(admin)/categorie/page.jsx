@@ -54,18 +54,18 @@ export default function Home() {
   const products = [
     {
       id: "FS16276",
-      name: "Mode Hommes, Femmes & Enfants",
+      name: "Mode Hommes",
       img: "/p-1.png",
-      price: "$80 à $400",
+      price: "8000 fcfa à 15000 fcfa",
       createdBy: "Vendeur",
-      stock: 46233,
+      subcategorie: "montre, vètement, chaussure",
     }
   ];
 
   return (
     <div className="container mt-2 mx-auto  px-10">
       {/* Grid des catégories */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {categories.map((category) => (
           <div
             className=" shadow-lg transform transition-all duration-300 rounded-lg overflow-hidden"
@@ -73,17 +73,17 @@ export default function Home() {
           >
             <div className=" text-center p-4">
               <div
-                className={`${category.bgColor} rounded-md flex items-center justify-center mx-auto py-4 transition-all duration-300`}
+                className={`${category.bgColor} rounded-md flex items-center justify-center py-1 transition-all duration-300`}
               >
                 <Image
                   src={category.img}
                   alt={category.name}
-                  height={100}
-                  width={100}
+                  height={70}
+                  width={70}
                   className="object-cover transition-transform transform"
                 />
               </div>
-              <h4 className="mt-3 mb-0 text-lg font-semibold text-gray-700 transition-all duration-300 hover:text-orange-500">
+              <h4 className="mt-3 mb-0 text-sm font-semibold text-gray-700 transition-all duration-300 hover:text-orange-500">
                 {category.name}
               </h4>
             </div>
@@ -146,9 +146,9 @@ export default function Home() {
                   </th>
                   <th className="px-4 text-left py-2 text-sm font-semibold text-gray-600">Catégories</th>
                   <th className="px-4 py-2 text-sm font-semibold text-gray-600">Prix de départ</th>
-                  <th className="px-4 py-2 text-sm font-semibold text-gray-600">Créé par</th>
+                  {/* <th className="px-4 py-2 text-sm font-semibold text-gray-600">Créé par</th> */}
                   <th className="px-4 py-2 text-sm font-semibold text-gray-600">ID</th>
-                  <th className="px-4 py-2 text-sm font-semibold text-gray-600">Stock de produits</th>
+                  <th className="px-4 py-2 text-sm font-semibold text-gray-600">Sous catégorie</th>
                   <th className="px-4 py-2 text-sm font-semibold text-gray-600">Actions</th>
                 </tr>
               </thead>
@@ -176,9 +176,9 @@ export default function Home() {
                       </div>
                     </td>
                     <td className="px-4 text-center py-2 text-black text-sm">{product.price}</td>
-                    <td className="px-4 py-2 text-black text-sm">{product.createdBy}</td>
+                    {/* <td className="px-4 py-2 text-black text-sm">{product.createdBy}</td> */}
                     <td className="px-4 py-2 text-black text-sm">{product.id}</td>
-                    <td className="px-4 py-2 text-center text-black text-sm">{product.stock}</td>
+                    <td className="px-4 py-2 text-center text-black text-sm">{product.subcategorie}</td>
                     <td className="px-4 py-2 text-sm">
                       <div className="flex gap-2">
                         <a

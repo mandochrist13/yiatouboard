@@ -13,17 +13,30 @@ const Link = [
     titre: "Dashboard",
   },
   {
+    id: 6,
+    href: "/global",
+    icon: <Icon icon="solar:box-bold-duotone"/>,
+    titre: "Global order",
+    // icon-park-twotone:order
+  },
+  {
     id: 2,
     href: "/produits",
     icon: <Icon icon="solar:t-shirt-bold-duotone" />,
     titre: " Produits",
   },
+  // {
+  //   id: 3,
+  //   href: "/categorie",
+  //   icon: <Icon icon="icon-park-twotone:view-list"/>,
+  //   titre: "Sous-catégorie",
+  // },
   {
-    id: 3,
-    href: "/categorie",
-    icon: <Icon icon="solar:clipboard-list-bold-duotone" />,
-    titre: " Categorie",
-  },
+    id: 7,
+     href: "/sousCategorie",
+     icon: <Icon icon="solar:clipboard-list-bold-duotone" />,
+     titre: "Categorie",
+   },
   {
     id: 4,
     href: "/commission",
@@ -36,22 +49,12 @@ const Link = [
     icon: <Icon icon="solar:bag-smile-bold-duotone" />,
     titre: "Commande",
   },
-  // {
-  //   id: 6,
-  //   href: "# ",
-  //   icon: <Icon icon="solar:card-send-bold-duotone" />,
-  //   titre: "Purchases",
-  // },
-  // {
-  //   id: 7,
-  //   href: "# ",
-  //   icon: <Icon icon="solar:confetti-minimalistic-bold-duotone" />,
-  //   titre: " Attributes",
-  // },
+ 
+   
   // {
   //   id: 8,
   //   href: "/roles",
-  //   icon: <Icon icon="solar:bill-list-bold-duotone" />,
+  //   icon: <Icon icon="solar:card-send-bold-duotone" />,
   //   titre: "  Invoices",
   // },
   {
@@ -80,7 +83,7 @@ export default function Sidebar() {
               <div className="flex p-7 justify-between">
                 <a href="index.html">
                   <Image
-                    src="/logo-light.png"
+                    src="/logo.png"
                     alt="Logo"
                     width={130}
                     height={38}
@@ -101,7 +104,7 @@ export default function Sidebar() {
               </div>
   
               {/* Liens de la sidebar */}
-              <div className="scrollbar" data-simplebar>
+              <div className="overflow-y-auto" data-simplebar>
                 <ul className="space-y-1" id="navbar-nav">
                   <li className="px-7 mb-5 text-[#5b626e]">General</li>
   
