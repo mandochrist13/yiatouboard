@@ -8,7 +8,7 @@ const TableRow = ({ order }) => (
     <td className="text-[#262d35]/60 text-[11px] p-3">{order.id}</td>
     <td className="text-[#262d35]/60 text-[11px] p-3">{order.date}</td>
     <td className="text-orange-600 text-[11px] p-3"><a href="#!" className="link-primary fw-medium">{order.customer}</a></td>
-    <td className="text-[#262d35]/60 text-[11px] p-3">{order.priority}</td>
+    {/* <td className="text-[#262d35]/60 text-[11px] p-3">{order.priority}</td> */}
     <td className="text-[#262d35]/60 text-[11px] p-3">{order.total}</td>
     <td className='text-center'><Badge status={order.status} /></td>
     <td className="text-[#262d35]/60 text-center text-[11px] p-3">{order.items}</td>

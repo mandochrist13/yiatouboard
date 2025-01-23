@@ -4,9 +4,10 @@ import Card from './card'; // Assurez-vous que le chemin est correct
 const AllCards = () => {
     const dataCartes = [
         { titre: 'Tout les clients', compte: '+22.63K', icone: 'solar:users-group-two-rounded-bold-duotone' },
-        { titre: 'Produits', compte: '+4.5k', icone: 'solar:box-bold-duotone' },
-        { titre: 'Commission Soldé', compte: '200.000 fcfa', icone: 'hugeicons:money-send-circle' },
-        { titre: 'Commissions à payer', compte: '180.000 fcfa', icone: 'fluent:receipt-money-20-filled' },
+        { titre: 'Commissions en attente', compte: '180.000 fcfa', icone: 'fluent:receipt-money-20-filled' },
+        { titre: 'Commission payé', compte: '200.000 fcfa', icone: 'hugeicons:money-send-circle' },
+        { titre: 'Solde disponible', compte: '300.000 fcfa', icone: 'solar:money-bag-bold-duotone' },
+
 
     ];
 

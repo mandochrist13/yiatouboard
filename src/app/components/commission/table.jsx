@@ -32,7 +32,7 @@ const Table = () => {
       statut: "payer",
       color: "bg-[#d3f2df]",
       textcolor: "text-[#21c45d]",
-      allprice: "10.000 fcfa",
+      allprice: "Instantané",
       pricepayment: "6.000 fcfa",
       date: "10-01-2025",
 
@@ -95,17 +95,18 @@ const Table = () => {
                 <th className="px-4 py-2 text-sm font-semibold text-gray-600">
                   ID Transaction
                 </th>
+                
+                 <th className="px-4 py-2 text-sm font-semibold text-gray-600">
+                  Type
+                </th> 
                 <th className="px-4 py-2 text-sm font-semibold text-gray-600">
-                  Statut
-                </th>
-                <th className="px-4 py-2 text-sm font-semibold text-gray-600">
-                  total commission
-                </th>
-                <th className="px-4 py-2 text-sm font-semibold text-gray-600">
-                  commission remboursé
+                  commission
                 </th>
                 <th className="px-4 py-2 text-sm font-semibold text-gray-600">
                   date
+                </th>
+                <th className="px-4 py-2 text-sm font-semibold text-gray-600">
+                  Statut
                 </th>
                 <th className="px-4 py-2 text-sm font-semibold text-gray-600">
                   Actions
@@ -138,6 +139,14 @@ const Table = () => {
                   <td className="px-4 text-center py-2 text-black text-sm">
                     {client.id}
                   </td>
+                  
+                  <td className="px-4 py-2 text-black text-sm">{client.allprice}</td> 
+                  <td className="px-4 py-2 text-center text-black text-sm">
+                    {client.pricepayment}
+                  </td>
+                  <td className="px-4 py-2 text-center text-black text-sm">
+                    {client.date}
+                  </td>
                   <td className="px-4 py-2 text-sm">
                     <div
                       className={`${client.color} ${
@@ -147,13 +156,6 @@ const Table = () => {
                       {client.statut}
                     </div>
                   </td>
-                  <td className="px-4 py-2 text-black text-sm">{client.allprice}</td>
-                  <td className="px-4 py-2 text-center text-black text-sm">
-                    {client.pricepayment}
-                  </td>
-                  <td className="px-4 py-2 text-center text-black text-sm">
-                    {client.date}
-                  </td>
                   <td className="px-4 py-2 text-sm">
                     <div className="flex gap-2">
                       <a
@@ -162,7 +164,7 @@ const Table = () => {
                       >
                         <Icon icon="solar:eye-broken" />
                       </a>
-                      <a
+                      {/* <a
                         href="#!"
                         className="btn bg-orange-500 text-white px-2 py-1 rounded-md hover:bg-orange-600 transition-all duration-300"
                       >
@@ -173,7 +175,7 @@ const Table = () => {
                         className="btn bg-red-500 text-white px-2 py-1 rounded-md hover:bg-red-600 transition-all duration-300"
                       >
                         <Icon icon="solar:trash-bin-minimalistic-2-broken" />
-                      </a>
+                      </a> */}
                     </div>
                   </td>
                 </tr>
