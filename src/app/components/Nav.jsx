@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 import { Icon } from "@iconify/react";
 import Image from "next/image";
 
@@ -8,6 +9,22 @@ export default function Navbar() {
   const [isUserMenuOpen, setUserMenuOpen] = useState(false);
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false); // Gestion du menu mobile
 
+  const pathname = usePathname();
+
+  // Map des chemins vers les textes correspondants
+  const pathTextMap = {
+    "/": "Bienvenue",
+    "/global": "Global Order",
+    "/produits": "Produits",
+    "/sousCategorie": "Catégorie",
+    "/commission": "Commission",
+    "/order": "Commande",
+    "/parametre": "Parametre",
+  };
+
+  const defaultText = "Bienvenue";
+  const textToDisplay = pathTextMap[pathname] || defaultText;
+
   return (
     <div className="container-fluid bg-[#f7f9fa] sticky top-0 w-full z-[9999]">
       {/* Navbar Header */}
@@ -15,7 +32,7 @@ export default function Navbar() {
         {/* Left Section */}
         <div className="flex items-center">
           <h4 className="text-lg font-semibold text-[#707894] uppercase transition-colors duration-700 hover:text-orange-600">
-            Bienvenue
+          {textToDisplay}
           </h4>
         </div>
 
