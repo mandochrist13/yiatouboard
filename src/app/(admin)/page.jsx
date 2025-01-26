@@ -97,12 +97,12 @@ export default function Test() {
         <div className="row">
           <div className="col-xxl-5">
             <div className="row">
-              <div className="col-12">
+              {/* <div className="col-12">
                 <div className="bg-[#ffe3d6] text-[14px] text-[#7a2b31] p-3 rounded-xl mb-3">
                   We regret to inform you that our server is currently
                   experiencing technical difficulties.
                 </div>
-              </div>
+              </div> */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                 <div className="bg-white rounded-lg ">
                   <div className="rounded-lg overflow-hidden">
@@ -111,14 +111,14 @@ export default function Test() {
                         <div className="col-6">
                           <div className="p-3 bg-[#ffded1] rounded-xl">
                             <Icon
-                              icon="solar:cart-5-bold-duotone"
+                              icon="solar:user-bold-duotone"
                               className="avatar-title text-4xl text-[#ff6d2e]"
                             />
                           </div>
                         </div>
                         {/* <!-- end col --> */}
                         <div className="flex flex-col text-end">
-                          <p className="text-gray-600 mb-0">Total Orders</p>
+                          <p className="text-gray-600 mb-0">Utilisateurs</p>
                           <h3 className="text-[#313b5e] text-2xl mt-1 mb-0">
                             13, 647
                           </h3>
@@ -158,16 +158,16 @@ export default function Test() {
                         <div className="col-6">
                           <div className="p-3 bg-[#ffded1] rounded-xl">
                             <Icon
-                              icon="cil:badge"
+                               icon="game-icons:pay-money"
                               className="avatar-title text-4xl text-[#ff6d2e]"
                             />
                           </div>
                         </div>
                         {/* <!-- end col --> */}
                         <div className="flex flex-col text-end">
-                          <p className="text-gray-600 mb-0">New Leads</p>
+                          <p className="text-gray-600 mb-0">Commission</p>
                           <h3 className="text-[#313b5e] text-2xl mt-1 mb-0">
-                            9, 526{" "}
+                            9, 526 F CFA{" "}
                           </h3>
                         </div>
                         {/* <!-- end col --> */}
@@ -205,14 +205,14 @@ export default function Test() {
                         <div className="col-6">
                           <div className="p-3 bg-[#ffded1] rounded-xl">
                             <Icon
-                              icon="mingcute:backpack-line"
+                              icon="lets-icons:order-duotone"
                               className="avatar-title text-4xl text-[#ff6d2e]"
                             />
                           </div>
                         </div>
                         {/* <!-- end col --> */}
                         <div className="flex flex-col text-end">
-                          <p className="text-gray-600 mb-0">Deals</p>
+                          <p className="text-gray-600 mb-0">Commandes</p>
                           <h3 className="text-[#313b5e] text-2xl mt-1 mb-0">
                             976{" "}
                           </h3>
@@ -259,7 +259,7 @@ export default function Test() {
                         </div>
                         {/* <!-- end col --> */}
                         <div className="flex flex-col text-end">
-                          <p className="text-gray-600 mb-0">Booked Revenue</p>
+                          <p className="text-gray-600 mb-0">Gain des commandes</p>
                           <h3 className="text-[#313b5e] text-2xl mt-1 mb-0">
                             $123.6k{" "}
                           </h3>
