@@ -204,7 +204,7 @@ const ProduitInformation = () => {
                 checked={isSample}
                 onChange={() => setIsSample(!isSample)}
               />
-              C'est un échantillon
+              C&apos;est un échantillon
             </label>
             {isSample && (
               <div className="mt-4">
