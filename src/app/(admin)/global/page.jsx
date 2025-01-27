@@ -2,10 +2,26 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { Chart, registerables } from "chart.js";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
 
 Chart.register(...registerables);
 
 const TopPagesWithChart = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const handleLast48HoursFilter = () => {
+    const now = new Date();
+    const filteredPages = generateProducts().filter((page) => {
+      const pageDate = new Date(page.date);
+      const diffInHours = (now - pageDate) / (1000 * 60 * 60); // Différence en heures
+      return diffInHours <= 48;
+    });
+    setPages(filteredPages);
+  };
+
   const chartRef = useRef(null);
 
   const generateProducts = () => {
@@ -53,8 +69,8 @@ const TopPagesWithChart = () => {
       newStatus === "Commandé"
         ? "bg-green-100 text-green-600"
         : newStatus === "En cours"
-        ? "bg-yellow-100 text-yellow-600"
-        : "bg-red-100 text-red-600";
+          ? "bg-yellow-100 text-yellow-600"
+          : "bg-red-100 text-red-600";
     setPages(updatedPages);
   };
 
@@ -112,7 +128,7 @@ const TopPagesWithChart = () => {
 
   return (
     <div className="p-8 flex flex-col gap-10">
-       {/* Graphique */}
+      {/* Graphique */}
       <div className="w-[60%]">
         <canvas ref={chartRef} className=""></canvas>
       </div>
@@ -121,34 +137,94 @@ const TopPagesWithChart = () => {
         <div className="shadow-md bg-white rounded-lg">
           <div className="flex items-center justify-between p-4 border-b border-gray-200">
             <h4 className="text-lg font-semibold">Global order</h4>
-            <div className="flex gap-4">
-              {/* Filtre par date */}
-              <input
-                type="date"
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
-                className="border px-2 py-1 rounded text-sm"
-              />
-              <input
-                type="date"
-                value={endDate}
-                onChange={(e) => setEndDate(e.target.value)}
-                className="border px-2 py-1 rounded text-sm"
-              />
-              <button
-                onClick={handleDateFilter}
-                className="bg-blue-500 text-white px-3 py-1 rounded text-sm"
-              >
-                Filtrer par date
-              </button>
-              {/* Tri */}
-              <button
-                onClick={handleSort}
-                className="bg-blue-500 text-white px-3 py-1 rounded text-sm"
-              >
-                Trier par quantité ({sortOrder === "asc" ? "⬆️" : "⬇️"})
-              </button>
-            </div>
+
+            <Popover>
+              <PopoverTrigger>⋮</PopoverTrigger>
+              <PopoverContent><div className="">
+                <h4 className="text-lg font-semibold mb-4">Filtres et Tri</h4>
+                <div className="flex flex-col gap-4">
+                  <button
+                    onClick={handleLast48HoursFilter}
+                    className="bg-blue-500 text-white px-3 py-1 rounded text-sm"
+                  >
+                    Dernières 48h
+                  </button>
+                  <div className="flex gap-2">
+                    <input
+                      type="date"
+                      value={startDate}
+                      onChange={(e) => setStartDate(e.target.value)}
+                      className="border px-2 py-1 rounded text-sm w-full"
+                    />
+                    <input
+                      type="date"
+                      value={endDate}
+                      onChange={(e) => setEndDate(e.target.value)}
+                      className="border px-2 py-1 rounded text-sm w-full"
+                    />
+                  </div>
+                  <button
+                    onClick={handleDateFilter}
+                    className="bg-blue-500 text-white px-3 py-1 rounded text-sm"
+                  >
+                    Filtrer par date
+                  </button>
+                  <button
+                    onClick={handleSort}
+                    className="bg-blue-500 text-white px-3 py-1 rounded text-sm"
+                  >
+                    Trier par quantité ({sortOrder === "asc" ? "⬆️" : "⬇️"})
+                  </button>
+                </div>
+              </div></PopoverContent>
+            </Popover>
+
+            {/* Modal */}
+            {isModalOpen && (
+              <div className="relative bg-white p-6 rounded-lg shadow-lg w-96 z-50 border">
+                <button
+                  onClick={() => setIsModalOpen(false)}
+                  className="text-gray-500 hover:text-gray-700 text-xl absolute top-4 right-4"
+                >
+                  ✕
+                </button>
+                <h4 className="text-lg font-semibold mb-4">Filtres et Tri</h4>
+                <div className="flex flex-col gap-4">
+                  <button
+                    onClick={handleLast48HoursFilter}
+                    className="bg-blue-500 text-white px-3 py-1 rounded text-sm"
+                  >
+                    Dernières 48h
+                  </button>
+                  <div className="flex gap-2">
+                    <input
+                      type="date"
+                      value={startDate}
+                      onChange={(e) => setStartDate(e.target.value)}
+                      className="border px-2 py-1 rounded text-sm w-full"
+                    />
+                    <input
+                      type="date"
+                      value={endDate}
+                      onChange={(e) => setEndDate(e.target.value)}
+                      className="border px-2 py-1 rounded text-sm w-full"
+                    />
+                  </div>
+                  <button
+                    onClick={handleDateFilter}
+                    className="bg-blue-500 text-white px-3 py-1 rounded text-sm"
+                  >
+                    Filtrer par date
+                  </button>
+                  <button
+                    onClick={handleSort}
+                    className="bg-blue-500 text-white px-3 py-1 rounded text-sm"
+                  >
+                    Trier par quantité ({sortOrder === "asc" ? "⬆️" : "⬇️"})
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
           <div>
             <table className="table-auto w-full text-left">
@@ -223,8 +299,6 @@ const TopPagesWithChart = () => {
           </div>
         </div>
       </div>
-
-     
     </div>
   );
 };

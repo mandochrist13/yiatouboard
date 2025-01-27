@@ -261,7 +261,7 @@ export default function Test() {
                         <div className="flex flex-col text-end">
                           <p className="text-gray-600 mb-0">Gain des commandes</p>
                           <h3 className="text-[#313b5e] text-2xl mt-1 mb-0">
-                            $123.6k{" "}
+                            123.6k F CFA{" "}
                           </h3>
                         </div>
                         {/* <!-- end col --> */}
