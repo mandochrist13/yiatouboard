@@ -113,7 +113,7 @@ export default function SubCategoriesPage() {
 
   return (
     <div className="container mt-2 mx-auto px-10">
-      {/* Grid des sous-catégories */}
+      {/* Grid des sous-catégories 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {subCategories.map((subCategory) => (
           <div
@@ -138,15 +138,13 @@ export default function SubCategoriesPage() {
             </div>
           </div>
         ))}
-      </div>
+      </div>*/}
 
       {/* Liste des produits */}
       <div className="mt-8">
         <div className="card shadow-lg rounded-lg overflow-hidden">
           <div className="w-full flex justify-between items-center p-4 bg-white">
-            <h4 className="text-lg text-black font-semibold">
-              Catégorie
-            </h4>
+            <h4 className="text-lg text-black font-semibold">Catégorie</h4>
             <div className="flex gap-4">
               <a
                 href="#!"
@@ -201,21 +199,21 @@ export default function SubCategoriesPage() {
                   <th className="px-5">
                     <input type="checkbox" className="form-checkbox" />
                   </th>
-                   <th className="px-4 py-2 text-sm font-semibold text-gray-600">
+                  <th className="px-4 py-2 text-sm font-semibold text-gray-600">
                     ID
                   </th>
                   <th className="px-4 py-2 text-left text-sm font-semibold text-gray-600">
-                    Catégorie
+                    Catégorie ({categories.length})
                   </th>
                   <th className="px-4 text-center py-2 text-sm font-semibold text-gray-600">
                     Prix
                   </th>
-                 
+
                   {/* <th className="px-4 py-2 text-sm font-semibold text-gray-600">
                     Catégorie
                   </th> */}
                   <th className="px-4 text-center py-2 text-sm font-semibold text-gray-600">
-                    Sous-catégorie
+                    Sous-catégorie ({subCategories.length})
                   </th>
                   <th className="px-4 py-2 text-center text-sm font-semibold text-gray-600">
                     Actions

@@ -6,22 +6,35 @@ import { WiCloudUp } from "react-icons/wi";
 import ProduitInformation from "../../../components/Forme.jsx";
 
 const ProductCard = () => {
-  const [image, setImage] = useState(null);
+  const [images, setImages] = useState([]); // Pour gérer plusieurs images
+  const [category, setCategory] = useState("");
+  const [subcategory, setSubcategory] = useState("");
+  const [size, setSize] = useState("");
+  const [shoeSize, setShoeSize] = useState("");
 
   const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImage(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
+    const files = Array.from(e.target.files);
+    const newImages = files.map((file) => URL.createObjectURL(file));
+    setImages((prevImages) => [...prevImages, ...newImages]);
+  };
+
+  const handleCategoryChange = (e) => {
+    const selectedCategory = e.target.value;
+    setCategory(selectedCategory);
+    setSubcategory(""); // Réinitialiser la sous-catégorie quand la catégorie change
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Image envoyée :", image);
+    console.log("Images envoyées :", images);
+    console.log("Catégorie:", category);
+    console.log("Sous-catégorie:", subcategory);
+    console.log("Taille:", size);
+    console.log("Pointure:", shoeSize);
+    console.log("Échantillon:", isSample);
+    if (isSample) {
+      console.log("Quantité:", quantity);
+    }
   };
 
   return (
@@ -32,14 +45,13 @@ const ProductCard = () => {
           <Image
             width={100}
             height={100}
-            src={image || "/p-1.png"}
-            alt="Men Black Slim Fit T-shirt"
+            src={images[0] || "/p-1.png"}
+            alt="Produit"
             className="h-full w-full object-contain"
           />
         </div>
         <h2 className="mt-4 text-[#262d35] text-lg font-medium text-center md:text-left">
-          T-shirt Slim Fit Noir pour Homme{" "}
-          <span className="text-gray-500">(Mode)</span>
+          {category === "T-shirt" ? "T-shirt Slim Fit" : "Chaussures"} pour Homme
         </h2>
         <p className="mt-4 text-[#262d35] text-sm font-medium text-center md:text-left">
           Prix :
@@ -51,34 +63,82 @@ const ProductCard = () => {
         </p>
 
         <div>
-          {/* Section Size */}
-          <h5 className="text-sm font-medium text-gray-700 mt-4">Taille :</h5>
-          <div className="flex gap-2 mt-2">
-            {["S", "M", "XL", "XXL"].map((sizeOption) => (
-              <a
-                key={sizeOption}
-                className="px-4 py-2 text-sm rounded-lg text-black bg-gray-200 transition-transform  hover:scale-105"
-              >
-                {sizeOption}
-              </a>
-            ))}
-          </div>
+          {/* Section Category */}
+          <h5 className="text-sm font-medium text-gray-700 mt-4">Catégorie :</h5>
+          <select
+            value={category}
+            onChange={handleCategoryChange}
+            className="w-full px-4 py-2 text-sm border border-gray-300 rounded-md"
+          >
+            <option value="">Sélectionnez une catégorie</option>
+            <option value="T-shirt">T-shirt</option>
+            <option value="Chaussures">Chaussures</option>
+          </select>
 
-          {/* Section Colors */}
-          <h5 className="text-sm font-medium text-gray-700 mt-6">Couleurs</h5>
-          <div className="flex gap-2 justify-between mt-2">
-            {["#EF4444", "#fff", "#3B82F6", "#F59E0B",].map(
-              (color, index) => (
-                <div key={index} className="bg-gray-300 p-3 rounded-md">
-                  <div
-                    
-                    className="w-4 h-4 rounded-full"
-                    style={{ backgroundColor: color }}
-                  />
-                </div>
-              )
-            )}
-          </div>
+          {/* Section Subcategory */}
+          {category && (
+            <>
+              <h5 className="text-sm font-medium text-gray-700 mt-6">
+                Sous-catégorie :
+              </h5>
+              <select
+                value={subcategory}
+                onChange={(e) => setSubcategory(e.target.value)}
+                className="w-full px-4 py-2 text-sm border border-gray-300 rounded-md"
+              >
+                <option value="">Sélectionnez une sous-catégorie</option>
+                {category === "T-shirt" && (
+                  <>
+                    <option value="M">M</option>
+                    <option value="L">L</option>
+                    <option value="XL">XL</option>
+                  </>
+                )}
+                {category === "Chaussures" && (
+                  <>
+                    <option value="39">39</option>
+                    <option value="40">40</option>
+                    <option value="41">41</option>
+                  </>
+                )}
+              </select>
+            </>
+          )}
+
+          {/* Dynamic Input based on selected category */}
+          {category === "T-shirt" && (
+            <>
+              <h5 className="text-sm font-medium text-gray-700 mt-6">Taille :</h5>
+              <div className="flex gap-2 mt-2">
+                {["S", "M", "L", "XL"].map((sizeOption) => (
+                  <a
+                    key={sizeOption}
+                    className="px-4 py-2 text-sm rounded-lg text-black bg-gray-200 transition-transform  hover:scale-105"
+                    onClick={() => setSize(sizeOption)}
+                  >
+                    {sizeOption}
+                  </a>
+                ))}
+              </div>
+            </>
+          )}
+
+          {category === "Chaussures" && (
+            <>
+              <h5 className="text-sm font-medium text-gray-700 mt-6">Pointure :</h5>
+              <div className="flex gap-2 mt-2">
+                {["39", "40", "41"].map((sizeOption) => (
+                  <a
+                    key={sizeOption}
+                    className="px-4 py-2 text-sm rounded-lg text-black bg-gray-200 transition-transform  hover:scale-105"
+                    onClick={() => setShoeSize(sizeOption)}
+                  >
+                    {sizeOption}
+                  </a>
+                ))}
+              </div>
+            </>
+          )}
         </div>
 
         <div className="flex justify-between gap-2 mt-6 ">
@@ -91,10 +151,10 @@ const ProductCard = () => {
         </div>
       </div>
 
-      {/* Formulaire d'ajout d'image */}
-      <div className="w-full lg:w-3/4 bg-white  p-4 rounded-md shadow-md">
+      {/* Formulaire d'ajout d'images */}
+      <div className="w-full lg:w-3/4 bg-white p-4 rounded-md shadow-md">
         <h2 className="text-lg text-black font-medium text-center md:text-left">
-          Ajouter une photo de produit
+          Ajouter des photos de produit
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -111,19 +171,23 @@ const ProductCard = () => {
               accept="image/*"
               onChange={handleImageChange}
               className="hidden"
+              multiple // Permet l'ajout de plusieurs fichiers
             />
-            {image && (
-              <Image
-                width={100}
-                height={100}
-                src={image}
-                alt="Aperçu"
-                className="mt-4 h-40 w-full object-cover rounded-lg border"
-              />
-            )}
-            <p className="text-gray-600 text-center mt-4">
+            <div className="mt-4 flex flex-wrap gap-2">
+              {images.map((img, index) => (
+                <Image
+                  key={index}
+                  width={100}
+                  height={100}
+                  src={img}
+                  alt={`Aperçu ${index}`}
+                  className="h-20 w-20 object-cover rounded-md border"
+                />
+              ))}
+            </div>
+            <p  className="text-gray-600 text-center mt-4">
               Déposez vos images ici, ou{" "}
-              <span className="text-blue-500 cursor-pointer">
+              <span   htmlFor="file-upload" className="text-blue-500 cursor-pointer">
                 cliquez pour parcourir
               </span>
             </p>
@@ -131,34 +195,12 @@ const ProductCard = () => {
               PNG, JPG et GIF sont autorisés.
             </p>
           </div>
-        </form>
 
-        <div className="">
           <ProduitInformation />
-        </div>
+        </form>
       </div>
     </div>
   );
 };
-
-// const ProductInformation = () => {
-//   return (
-//     <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-xl">
-//       <h4 className="text-2xl font-medium text-center mb-8">Informations sur le produit</h4>
-
-//       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-//         <div>
-//           <label htmlFor="product-brand" className="block text-sm font-medium">Marque</label>
-//           <input type="text" id="product-brand" className="w-full p-3 border rounded-lg" />
-//         </div>
-
-//         <div>
-//           <label htmlFor="product-weight" className="block text-sm font-medium">Poids</label>
-//           <input type="text" id="product-weight" className="w-full p-3 border rounded-lg" />
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
 
 export default ProductCard;

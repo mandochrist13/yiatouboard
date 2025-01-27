@@ -3,17 +3,19 @@
 import React, { useState } from 'react';
 
 const ProduitInformation = () => {
-  const [productName, setProductName] = useState('');
-  const [productCategory, setProductCategory] = useState('');
-  const [productBrand, setProductBrand] = useState('');
-  const [productWeight, setProductWeight] = useState('');
-  const [gender, setGender] = useState('');
+  // const [productName, setProductName] = useState('');
+  // const [productCategory, setProductCategory] = useState('');
+  // const [productBrand, setProductBrand] = useState('');
+  // const [productWeight, setProductWeight] = useState('');
+  // const [gender, setGender] = useState('');
   const [size, setSize] = useState([]);
   const [colors, setColors] = useState([]);
   const [description, setDescription] = useState('');
   const [tagNumber, setTagNumber] = useState('');
   const [stock, setStock] = useState('');
-  const [tags, setTags] = useState([]);
+  // const [tags, setTags] = useState([]);
+  const [isSample, setIsSample] = useState(false); // Pour savoir si c'est un échantillon
+  const [quantity, setQuantity] = useState(1); // Quantité pour l'échantillon
 
   const handleSizeChange = (sizeSelected) => {
     setSize((prevSize) =>
@@ -50,7 +52,7 @@ const ProduitInformation = () => {
 
       <div className="space-y-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="form-group mb-4">
+          <div className="form-group mb-4">
             <label htmlFor="productName" className="block text-gray-700 font-medium">
               Nom du produit
             </label>
@@ -63,9 +65,9 @@ const ProduitInformation = () => {
             />
           </div>
 
-          <div className="form-group mb-4">
+          {/* <div className="form-group mb-4">
             <label htmlFor="category" className="block text-gray-700 font-medium">
-            Catégories de produits
+              Catégories de produits
             </label>
             <select id="category" className="w-full p-2 border border-gray-300 rounded-md">
               <option value="">Choisissez une catégorie</option>
@@ -76,7 +78,7 @@ const ProduitInformation = () => {
               <option value="accessoires">Meubles</option>
               <option value="accessoires">Casque audio</option>
             </select>
-          </div>
+          </div> */}
 
           <div className="form-group mb-4">
             <label htmlFor="brand" className="block text-gray-700 font-medium">
@@ -104,8 +106,21 @@ const ProduitInformation = () => {
             />
           </div>
 
-          
           <div className="form-group mb-4">
+            <label htmlFor="brand" className="block text-gray-700 font-medium">
+              Prix
+            </label>
+            <input
+              type="text"
+              id="brand"
+              placeholder="En F CFA"
+              className="w-full p-2 border border-gray-300 rounded-md"
+              required
+            />
+          </div>
+
+
+          {/* <div className="form-group mb-4">
             <label className="block text-gray-700 font-medium">Genre</label>
             <select id="gender" className="w-full p-2 border border-gray-300 rounded-md">
               <option value="">Sélectionner le sexe</option>
@@ -113,11 +128,11 @@ const ProduitInformation = () => {
               <option value="femme">Femme</option>
               <option value="unisexe">Autre</option>
             </select>
-          </div>
+          </div> */}
         </div>
-        
 
-        <div>
+
+        {/* <div>
           <h5 className="text-sm font-medium text-gray-700">Tailles:</h5>
           <div className="flex gap-4 flex-wrap">
             {['XS', 'S', 'M', 'XL', 'XXL', '3XL'].map((sizeOption) => (
@@ -130,7 +145,7 @@ const ProduitInformation = () => {
               </button>
             ))}
           </div>
-        </div>
+        </div> */}
 
         <div>
           <h5 className="text-sm font-medium text-gray-700">Couleurs:</h5>
@@ -169,23 +184,9 @@ const ProduitInformation = () => {
               onChange={(e) => setTagNumber(e.target.value)}
             />
           </div>
-
-          <div className="form-group">
-            <label htmlFor="product-stock" className="block text-sm font-medium text-gray-700">Action</label>
-            <input
-              type="number"
-              id="product-stock"
-              placeholder="Quantiter"
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-              value={stock}
-              onChange={(e) => setStock(e.target.value)}
-            />
-          </div>
-          {/* select */}
-          
-          <div className="form-group h-64 mb-4">
+          {/* <div className="form-group h-64 mb-4">
             <label htmlFor="category" className="block text-gray-700 font-medium">
-            Étiqueter
+              Étiqueter
             </label>
             <select id="category" className="w-full p-2 border border-gray-300 rounded-md">
               <option value="">Électronique</option>
@@ -193,7 +194,35 @@ const ProduitInformation = () => {
               <option value="chaussures">Montre</option>
               <option value="accessoires">Accessoires</option>
             </select>
+          </div> */}
+
+          {/* Spécifier si c'est un échantillon ou un produit international */}
+          <div className="">
+            <label className="flex items-center gap-2 text-sm text-gray-700">
+              <input
+                type="checkbox"
+                checked={isSample}
+                onChange={() => setIsSample(!isSample)}
+              />
+              C'est un échantillon
+            </label>
+            {isSample && (
+              <div className="mt-4">
+                <h5 className="text-sm font-medium text-gray-700">Quantité :</h5>
+                <input
+                  type="number"
+                  value={quantity}
+                  onChange={(e) => setQuantity(e.target.value)}
+                  min="1"
+                  className="w-full px-4 py-2 text-sm border border-gray-300 rounded-md"
+                />
+              </div>
+            )}
           </div>
+          {/* select */}
+
+         
+          
         </div>
       </div>
     </div>
