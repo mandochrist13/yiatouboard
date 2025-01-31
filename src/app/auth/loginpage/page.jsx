@@ -1,8 +1,58 @@
+"use client"
 
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
+import { Icon } from "@iconify/react";
+import { Auth } from "@/lib/firebase";
+import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
+
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const provider = new GoogleAuthProvider();
+  const router = useRouter();
+  const handleLogin = () => {
+    signInWithEmailAndPassword(Auth, email, password)
+      .then(() => {
+        // Signed in successfully.
+        router.push("/");
+        console.log("User signed in!");
+      })
+      .catch((error) => {
+        console.error("Error signing in with email and password:", error);
+      });
+  };
+
+  const handleGoogleLogin = () => {
+    signInWithPopup(Auth, provider)
+      .then((result) => {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = credential.accessToken;
+        // The signed-in user info.
+        const user = result.user;
+        router.push("/");
+        // IdP data available using getAdditionalUserInfo(result)
+        // ...
+      }).catch((error) => {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.customData.email;
+        // The AuthCredential type that was used.
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        // ...
+      });
+  };
+
+
+
+
+
+
   return (
     <div className="min-h-screen flex flex-col md:flex-row items-center justify-center bg-white">
       {/* Section gauche */}
@@ -11,9 +61,11 @@ export default function LoginPage() {
           {/* Logo */}
           <a href="index.html" className="block">
             <Image
-              src="/logo-dark.png"
+              src="/logo.png"
               alt="Logo dark"
-              className="h-8 sm:h-6"
+              width={1000}
+              height={1000}
+              className="h-8 w-32"
             />
           </a>
         </div>
@@ -26,7 +78,7 @@ export default function LoginPage() {
           d&apos;administration.
         </p>
 
-        <form className="w-full max-w-sm mx-auto md:mx-0">
+        <div className="w-full max-w-sm mx-auto md:mx-0">
           <div className="mb-4">
             <label
               htmlFor="nam"
@@ -35,9 +87,9 @@ export default function LoginPage() {
               Nom d&apos;utilisateur
             </label>
             <input
-              type="text"
-              id="nam"
-              name="nam"
+              type="mail"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="Entrez votre nom"
               className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-orange-500 focus:border-orange-500"
               required
@@ -53,8 +105,8 @@ export default function LoginPage() {
             </label>
             <input
               type="password"
-              id="password"
-              name="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               placeholder="Entrez votre mot de passe"
               className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-orange-500 focus:border-orange-500"
               required
@@ -80,14 +132,24 @@ export default function LoginPage() {
               Souviens-toi de moi
             </label>
           </div>
+          <div className="flex flex-col justify-center items-center gap-5" >
+            <button
+              type="submit"
+              onClick={handleLogin}
+              className="w-full py-2 px-4 bg-orange-500 text-white rounded-md hover:bg-orange-600 focus:outline-none"
+            >
+              Se connecter
+            </button>
+            <p>ou</p>
+            <div className="flex gap-5"><button type="submit"
+              onClick={handleGoogleLogin}>
+              <Icon icon="devicon:google" width="28" height="28" /></button>
+            <button><Icon icon="logos:facebook" width="28" height="28" /></button></div>
+            
 
-          <button
-            type="submit"
-            className="w-full py-2 px-4 bg-orange-500 text-white rounded-md hover:bg-orange-600 focus:outline-none"
-          >
-            Se connecter
-          </button>
-        </form>
+          </div>
+
+        </div>
 
       </div>
 
@@ -97,6 +159,8 @@ export default function LoginPage() {
           <Image
             src="/img-10.jpg"
             alt="Image description"
+            width={1000}
+            height={1000}
             className="w-full h-[400px] md:h-[500px] lg:h-[600px] object-cover rounded-lg shadow-lg"
           />
         </div>

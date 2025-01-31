@@ -1,0 +1,41 @@
+"use client"
+
+// src/context/UserContext.js
+import { createContext, useContext, useEffect, useState } from "react";
+import { onAuthStateChanged } from "firebase/auth";
+import { Auth } from "@/lib/firebase"; // Importez votre instance Firebase Auth
+
+// Créez le contexte
+const UserContext = createContext();
+
+// Hook personnalisé pour utiliser le contexte
+export const useUser = () => useContext(UserContext);
+
+// Fournisseur de contexte
+export const UserProvider = ({ children }) => {
+  const [user, setUser] = useState(null); // État de l'utilisateur
+  const [loading, setLoading] = useState(true); // État de chargement
+
+  useEffect(() => {
+    // Écoutez les changements d'état d'authentification
+    const unsubscribe = onAuthStateChanged(Auth, (user) => {
+      setUser(user); // Mettez à jour l'utilisateur
+      setLoading(false); // Arrêtez le chargement
+    });
+
+    // Nettoyez l'abonnement lors du démontage du composant
+    return () => unsubscribe();
+  }, []);
+
+  // Valeur fournie par le contexte
+  const value = {
+    user,
+    loading,
+  };
+
+  return (
+    <UserContext.Provider value={value}>
+      {!loading && children} {/* Affichez les enfants uniquement une fois le chargement terminé */}
+    </UserContext.Provider>
+  );
+};

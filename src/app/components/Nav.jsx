@@ -208,13 +208,10 @@ function UserDropdown({ isOpen, toggleMenu }) {
             <Icon icon="bx:message-dots" width="20" height="20" />
             Messages
           </a>
-          <a
-            href="auth-signin.html"
-            className="flex items-center gap-4 text-red-600 hover:text-red-700 transition-colors duration-300"
-          >
-            <Icon icon="bx:log-out " width="20" height="20" />
-            Déconnexion
-          </a>
+        
+          <button className="flex items-center gap-4 text-red-600 hover:text-red-700 transition-colors duration-300"
+          ><Icon icon="bx:log-out " width="20" height="20" />
+          Déconnexion</button>
         </div>
       )}
     </div>
