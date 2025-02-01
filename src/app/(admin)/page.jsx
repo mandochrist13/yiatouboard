@@ -1,6 +1,5 @@
 "use client";
 import { useUser } from "@/context/UserContext";
-
 import { Icon } from "@iconify/react";
 import Chart from "chart.js/auto";
 import { useRouter } from "next/navigation";
