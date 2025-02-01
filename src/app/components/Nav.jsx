@@ -3,6 +3,7 @@ import { useState } from "react";
 import { usePathname } from "next/navigation";
 import { Icon } from "@iconify/react";
 import Image from "next/image";
+import { useUser } from "@/context/UserContext";
 
 export default function Navbar() {
   const [isNotificationMenuOpen, setNotificationMenuOpen] = useState(false);
@@ -174,6 +175,8 @@ function NotificationMenu({ isOpen, toggleMenu }) {
 
 // User Dropdown
 function UserDropdown({ isOpen, toggleMenu }) {
+  const { logout } = useUser();
+
   return (
     <div className="relative">
       <button
@@ -208,13 +211,10 @@ function UserDropdown({ isOpen, toggleMenu }) {
             <Icon icon="bx:message-dots" width="20" height="20" />
             Messages
           </a>
-          <a
-            href="auth-signin.html"
-            className="flex items-center gap-4 text-red-600 hover:text-red-700 transition-colors duration-300"
-          >
-            <Icon icon="bx:log-out " width="20" height="20" />
-            Déconnexion
-          </a>
+        
+          <button onClick={logout} className="flex items-center gap-4 text-red-600 hover:text-red-700 transition-colors duration-300"
+          ><Icon icon="bx:log-out " width="20" height="20" />
+          Déconnexion</button>
         </div>
       )}
     </div>

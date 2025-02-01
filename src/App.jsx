@@ -1,4 +1,5 @@
 import React from 'react';
+import { UserProvider } from "@/context/UserContext";
 import { BrowserRouter as Router } from 'react-router-dom';
 import Layout from './components/layout/Layout';
 import './assets/css/vendor.min.css';
