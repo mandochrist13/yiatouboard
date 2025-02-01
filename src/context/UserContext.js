@@ -2,7 +2,7 @@
 
 // src/context/UserContext.js
 import { createContext, useContext, useEffect, useState } from "react";
-import { onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import { Auth } from "@/lib/firebase"; // Importez votre instance Firebase Auth
 
 // Créez le contexte
@@ -27,14 +27,15 @@ export const UserProvider = ({ children }) => {
     return () => unsubscribe();
   }, []);
 
-  // Valeur fournie par le contexte
-  const value = {
-    user,
-    loading,
+
+   // Fonction pour déconnecter l'utilisateur
+   const logout = async () => {
+    await signOut(Auth);
+    setUser(null);
   };
 
   return (
-    <UserContext.Provider value={value}>
+    <UserContext.Provider value={{user, loading, logout}}>
       {!loading && children} {/* Affichez les enfants uniquement une fois le chargement terminé */}
     </UserContext.Provider>
   );

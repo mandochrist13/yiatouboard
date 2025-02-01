@@ -9,9 +9,7 @@ import './assets/css/app.min.css';
 function App() {
   return (
     <Router>
-      <UserProvider>
-        <Layout />
-      </UserProvider>
+      <Layout />
     </Router>
   );
 }
