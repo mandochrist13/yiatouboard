@@ -9,10 +9,7 @@ import { useEffect, useRef } from "react";
 export default function Test() {
   const { user } = useUser();
   const router = useRouter();
-
-  if (!user) {
-    router.push("/auth/loginpage");
-  }
+  
   const chartRef = useRef(null);
 
   useEffect(() => {
