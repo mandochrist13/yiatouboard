@@ -31,6 +31,7 @@ export const UserProvider = ({ children }) => {
    // Fonction pour déconnecter l'utilisateur
    const logout = async () => {
     await signOut(Auth);
+    Cookies.remove("authToken"); // Supprimer le token du cookie
     setUser(null);
   };
 
