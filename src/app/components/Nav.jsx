@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import { Icon } from "@iconify/react";
 import Image from "next/image";
 import { useUser } from "@/context/UserContext";
+import { useRouter } from "next/navigation";
 
 export default function Navbar() {
   const [isNotificationMenuOpen, setNotificationMenuOpen] = useState(false);
@@ -176,6 +177,12 @@ function NotificationMenu({ isOpen, toggleMenu }) {
 // User Dropdown
 function UserDropdown({ isOpen, toggleMenu }) {
   const { logout } = useUser();
+  const router = useRouter();
+
+  const handleLogout = ()=> {
+    logout()
+    router.push('/')
+  }
 
   return (
     <div className="relative">
@@ -212,7 +219,7 @@ function UserDropdown({ isOpen, toggleMenu }) {
             Messages
           </a>
         
-          <button onClick={logout} className="flex items-center gap-4 text-red-600 hover:text-red-700 transition-colors duration-300"
+          <button onClick={() => handleLogout()} className="flex items-center gap-4 text-red-600 hover:text-red-700 transition-colors duration-300"
           ><Icon icon="bx:log-out " width="20" height="20" />
           Déconnexion</button>
         </div>
