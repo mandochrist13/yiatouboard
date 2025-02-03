@@ -6,6 +6,7 @@ import { Icon } from "@iconify/react";
 import { Auth } from "@/lib/firebase";
 import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 
 export default function LoginPage() {
 
@@ -15,10 +16,21 @@ export default function LoginPage() {
   const router = useRouter();
   const handleLogin = () => {
     signInWithEmailAndPassword(Auth, email, password)
-      .then(async () => {
+      .then(async (userCredential) => {
+        const user = userCredential.user;
         // Signed in successfully.
-        router.push("/dashboard");
-        console.log("User signed in!");
+        if (user) {
+          // Récupérer le token Firebase
+          const token = await user.getIdToken();
+    
+          // Stocker le token dans un cookie sécurisé
+          Cookies.set("authToken", token, { expires: 1, secure: true, sameSite: "Strict" });
+    
+          console.log("User signed in and token stored in cookies!");
+          router.push("/dashboard");
+        }
+       
+        
       })
       .catch((error) => {
         console.error("Error signing in with email and password:", error);
