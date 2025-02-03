@@ -15,9 +15,9 @@ export default function LoginPage() {
   const router = useRouter();
   const handleLogin = () => {
     signInWithEmailAndPassword(Auth, email, password)
-      .then(() => {
+      .then(async () => {
         // Signed in successfully.
-        router.push("/");
+        router.push("/dashboard");
         console.log("User signed in!");
       })
       .catch((error) => {
@@ -33,7 +33,7 @@ export default function LoginPage() {
         const token = credential.accessToken;
         // The signed-in user info.
         const user = result.user;
-        router.push("/");
+        router.push("/dashboard");
         // IdP data available using getAdditionalUserInfo(result)
         // ...
       }).catch((error) => {
