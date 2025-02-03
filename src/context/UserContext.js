@@ -4,6 +4,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { Auth } from "@/lib/firebase"; // Importez votre instance Firebase Auth
+import Cookies from "js-cookie";
 
 // Créez le contexte
 const UserContext = createContext();

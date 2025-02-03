@@ -4,8 +4,6 @@ export async function middleware(request) {
   const authToken = request.cookies.get("authToken");
   const { pathname } = request.nextUrl;
 
-  console.log('token :', authToken)
-
   // Si l'utilisateur n'est pas authentifié et essaie d'accéder au tableau de bord
   if (!authToken && pathname.startsWith("/dashboard")) {
     return NextResponse.redirect(new URL("/", request.url));
