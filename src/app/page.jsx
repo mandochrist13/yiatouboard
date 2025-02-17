@@ -13,51 +13,72 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const provider = new GoogleAuthProvider();
   const router = useRouter();
-  const handleLogin = () => {
-    signInWithEmailAndPassword(Auth, email, password)
-      .then(async (userCredential) => {
-        const user = userCredential.user;
-        // Signed in successfully.
-        if (user) {
-          // Récupérer le token Firebase
-          const token = await user.getIdToken();
-    
-          // Stocker le token dans un cookie sécurisé
-          Cookies.set("authToken", token, { expires: 1, secure: true, sameSite: "Strict" });
-    
-          console.log("User signed in and token stored in cookies!");
-          router.push("/dashboard");
-        }
-       
-        
-      })
-      .catch((error) => {
-        console.error("Error signing in with email and password:", error);
-      });
-  };
+
+
+const handleLogin = async () => {
+  try {
+    const response = await fetch("/api/v1/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Échec de la connexion");
+    }
+
+    const data = await response.json();
+    console.log("Réponse du serveur:", data);
+
+    if (data.token) {
+      // Stocker le token dans les cookies avec une expiration de 7 jours
+      Cookies.set("authToken", data.token, { expires: 7, secure: true });
+
+      console.log("Connexion réussie, redirection vers /dashboard...");
+      router.push("/dashboard");
+    } else {
+      console.error("Aucun token reçu, vérifie la réponse de l'API");
+    }
+
+  } catch (error) {
+    console.error("Erreur de connexion:", error);
+  }
+};
+
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(Auth, (user) => {
+      if (user) {
+        router.push("/dashboard");  // Redirige si l'utilisateur est déjà connecté
+      }
+    });
+
+    return () => unsubscribe();  // Nettoyage de l'écouteur d'événements
+  }, [router]);
+
+
 
   const handleGoogleLogin = () => {
     signInWithPopup(Auth, provider)
       .then((result) => {
-        // This gives you a Google Access Token. You can use it to access the Google API.
         const credential = GoogleAuthProvider.credentialFromResult(result);
-        const token = credential.accessToken;
-        // The signed-in user info.
+        const token = credential?.accessToken;  // Vérifier si la valeur est définie
         const user = result.user;
+
+        console.log("Utilisateur Google connecté:", user);
+        console.log("Token:", token);
+        Cookies.set("authToken", token, { expires: 7, secure: true });
+
+
         router.push("/dashboard");
-        // IdP data available using getAdditionalUserInfo(result)
-        // ...
-      }).catch((error) => {
-        // Handle Errors here.
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // The email of the user's account used.
-        const email = error.customData.email;
-        // The AuthCredential type that was used.
-        const credential = GoogleAuthProvider.credentialFromError(error);
-        // ...
+      })
+      .catch((error) => {
+        console.error("Erreur d'authentification Google:", error);
       });
   };
+
 
 
 
