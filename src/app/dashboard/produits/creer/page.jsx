@@ -1,22 +1,118 @@
 "use client";
 
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { WiCloudUp } from "react-icons/wi";
-import ProduitInformation from "../../../components/Forme.jsx";
+// import ProduitInformation from "../../../components/Forme.jsx";
+import { db, storage } from "../../../../lib/firebase.js";
+import { addDoc, collection } from "firebase/firestore";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 const ProductCard = () => {
-  const [images, setImages] = useState([]); // Pour gérer plusieurs images
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState("");
+  const [image, setImage] = useState(""); // Pour gérer plusieurs images
   const [category, setCategory] = useState("");
-  const [subcategory, setSubcategory] = useState("");
-  const [size, setSize] = useState("");
-  const [shoeSize, setShoeSize] = useState("");
 
-  const handleImageChange = (e) => {
-    const files = Array.from(e.target.files);
-    const newImages = files.map((file) => URL.createObjectURL(file));
-    setImages((prevImages) => [...prevImages, ...newImages]);
+  const [subcategory, setSubcategory] = useState("");
+  const [shoeSize, setShoeSize] = useState("");
+  const [size, setSize] = useState([]);
+  const [colors, setColors] = useState([]);
+  const [description, setDescription] = useState('');
+  const [tagNumber, setTagNumber] = useState('');
+  const [weight, setWeight] = useState('');
+  // const [tags, setTags] = useState([]);
+  const [isSample, setIsSample] = useState(false); // Pour savoir si c'est un échantillon
+  const [quantity, setQuantity] = useState(1); // Quantité pour l'échantillon
+
+
+  const dbref = collection(db, "Products")
+
+
+
+  const handleSizeChange = (sizeSelected) => {
+    setSize((prevSize) =>
+      prevSize.includes(sizeSelected)
+        ? prevSize.filter((size) => size !== sizeSelected)
+        : [...prevSize, sizeSelected]
+    );
   };
+
+  const handleColorChange = (colorSelected) => {
+    setColors((prevColors) =>
+      prevColors.includes(colorSelected)
+        ? prevColors.filter((color) => color !== colorSelected)
+        : [...prevColors, colorSelected]
+    );
+  };
+
+
+  const colorOptions = {
+    dark: '#1a202c',
+    yellow: '#fbbf24',
+    white: '#ffffff',
+    red: '#ef4444',
+    green: '#10b981',
+    blue: '#3b82f6',
+    sky: '#0ea5e9',
+    gray: '#9ca3af',
+  };
+
+
+
+  
+  const uploadImage = (file) => {
+    if (!file) return;
+  
+    try {
+      const storageRef = ref(storage, `images/${file.name}`);
+    console.log(`storageRef ${storageRef}`);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+    console.log(`Upload task ${uploadTask}`);
+  
+    return new Promise((resolve, reject) => {
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          // Progression de l'upload (optionnel)
+          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log(`Upload en cours : ${progress}%`);
+        },
+        (error) => reject(error), // Gérer les erreurs
+        async () => {
+          // Récupérer l'URL après l'upload
+          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+          resolve(downloadURL);
+        }
+      );
+    });
+    } catch (error) {
+      console.log(`error ${error}` );
+    }
+    
+  };
+
+  const handleImageChange = async (e) => {
+    const file = e.target.files[0]; // Récupérer seulement le premier fichier
+
+    if (!file) {
+      alert("Aucune image sélectionnée !");
+      return;
+    }
+
+    console.log("url image:" , file)
+
+    try {
+      const url = await uploadImage(file)
+      console.log("Image uploaded :", url);
+      setImage(url);
+     } catch (error) {
+       console.error("Erreur lors de l'upload de l'image :", error);
+       alert("Erreur lors de l'upload de l'image. Réessayez !");
+     }
+  };
+
+
 
   const handleCategoryChange = (e) => {
     const selectedCategory = e.target.value;
@@ -24,9 +120,17 @@ const ProductCard = () => {
     setSubcategory(""); // Réinitialiser la sous-catégorie quand la catégorie change
   };
 
+  const fileInputRef = useRef(null);
+  const handleUploadSuccess = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ""; // ✅ Réinitialise correctement le champ file
+    }
+  };
+
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Images envoyées :", images);
+    console.log("Image envoyée :", image);
     console.log("Catégorie:", category);
     console.log("Sous-catégorie:", subcategory);
     console.log("Taille:", size);
@@ -37,6 +141,54 @@ const ProductCard = () => {
     }
   };
 
+
+
+  const handleCreateProduct = async () => {
+    if (!name || !category || !price || !description || !image) {
+      alert("Veuillez remplir tout les champs")
+      return;
+    }
+
+    const productData = {
+      name,
+      image,
+      category,
+      price: parseFloat(price),
+      description,
+      subcategory,
+      size,
+      colors,
+      weight,
+      shoeSize,
+      isSample,
+      quantity: parseInt(quantity),
+    };
+
+    try {
+      const response = await fetch("/api/v1/products", {
+        method: "POST",
+        // mode: 'no-cors',
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(productData),
+      });
+
+      const docRef = await addDoc(collection(db, "Products"), productData);
+
+      if (!response.ok) {
+        throw new Error("Erreur lors de la création du produit");
+      }
+
+      console.log("Produit ajouté avec ID :", docRef.id);
+      alert("Produit ajouté avec succès !");
+    } catch (error) {
+      console.error("Erreur lors de l'ajout du produit :", error);
+      alert(error.message);
+    }
+  };
+
+
   return (
     <div className="flex flex-col gap-6 lg:flex-row md:space-x-6 p-8 bg-gray-100">
       {/* Product Card */}
@@ -45,7 +197,7 @@ const ProductCard = () => {
           <Image
             width={100}
             height={100}
-            src={images[0] || "/p-1.png"}
+            src={image ? image : "/p-1.png"}
             alt="Produit"
             className="h-full w-full object-contain"
           />
@@ -142,7 +294,7 @@ const ProductCard = () => {
         </div>
 
         <div className="flex justify-between gap-2 mt-6 ">
-          <button className="w-full py-2 text-sm bg-white border hover:bg-gray-500 border-gray-500 text-gray-500 rounded-xl hover:text-white transition-transform">
+          <button onClick={handleCreateProduct} className="w-full py-2 text-sm bg-white border hover:bg-gray-500 border-gray-500 text-gray-500 rounded-xl hover:text-white transition-transform">
             Ajouter
           </button>
           <button className="px-5 w-full text-sm py-2 bg-orange-400 text-white rounded-xl hover:bg-orange-600 transition-transform ">
@@ -160,34 +312,36 @@ const ProductCard = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="border-2 border-dashed p-8 rounded-md flex flex-col items-center">
             <label
-              htmlFor="file-upload"
+
+              multiple accept="image/*"
               className="h-20 w-20 flex items-center justify-center cursor-pointer"
             >
               <WiCloudUp className="text-orange-500 text-6xl" />
             </label>
             <input
-              id="file-upload"
+              // id="file-upload"
               type="file"
               accept="image/*"
+              // value={images}
+              ref={fileInputRef}
+              //  onChange={handleFileChange}
               onChange={handleImageChange}
-              className="hidden"
-              multiple // Permet l'ajout de plusieurs fichiers
+              className=" "
+            // multiple  Permet l'ajout de plusieurs fichiers
             />
             <div className="mt-4 flex flex-wrap gap-2">
-              {images.map((img, index) => (
+              {image && (
                 <Image
-                  key={index}
+                  src={image}
+                  alt="Image sélectionnée"
                   width={100}
                   height={100}
-                  src={img}
-                  alt={`Aperçu ${index}`}
-                  className="h-20 w-20 object-cover rounded-md border"
                 />
-              ))}
+              )}
             </div>
-            <p  className="text-gray-600 text-center mt-4">
+            <p className="text-gray-600 text-center mt-4">
               Déposez vos images ici, ou{" "}
-              <span   htmlFor="file-upload" className="text-blue-500 cursor-pointer">
+              <span htmlFor="file-upload" className="text-blue-500 cursor-pointer">
                 cliquez pour parcourir
               </span>
             </p>
@@ -196,7 +350,142 @@ const ProductCard = () => {
             </p>
           </div>
 
-          <ProduitInformation />
+          {/* <ProduitInformation /> */}
+          <div className="max-w-4xl mx-auto p-6  bg-white shadow-lg rounded-xl">
+            <div className="text-center mb-8">
+              <h4 className="text-2xl font-medium text-gray-800">Informations sur le produit</h4>
+            </div>
+
+            <div className="space-y-8">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div className="form-group mb-4">
+                  <label htmlFor="productName" className="block text-gray-700 font-medium">
+                    Nom du produit
+                  </label>
+                  <input
+                    type="text"
+                    id="productName"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Nom des produits"
+                    className="w-full p-2 border border-gray-300 rounded-md"
+                    required
+                  />
+                </div>
+
+
+                {/* <div className="form-group mb-4">
+                  <label htmlFor="brand" className="block text-gray-700 font-medium">
+                    Marque
+                  </label>
+                  <input
+                    type="text"
+                    id="brand"
+                    value={}
+                    onChange={(e) => setWeight(e.target.value)}
+                    placeholder="Nom de marque"
+                    className="w-full p-2 border border-gray-300 rounded-md"
+                    required
+                  />
+                </div> */}
+
+                <div className="form-group mb-4">
+                  <label htmlFor="brand" className="block text-gray-700 font-medium">
+                    Poids
+                  </label>
+                  <input
+                    type="text"
+                    id="brand"
+                    value={weight}
+                    onChange={(e) => setWeight(e.target.value)}
+                    placeholder="En g et Kg"
+                    className="w-full p-2 border border-gray-300 rounded-md"
+                    required
+                  />
+                </div>
+
+                <div className="form-group mb-4">
+                  <label htmlFor="brand" className="block text-gray-700 font-medium">
+                    Prix
+                  </label>
+                  <input
+                    type="text"
+                    id="brand"
+                    value={price}
+                    onChange={(e) => setPrice(e.target.value)}
+                    placeholder="En F CFA"
+                    className="w-full p-2 border border-gray-300 rounded-md"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <h5 className="text-sm font-medium text-gray-700">Couleurs:</h5>
+                  <div className="flex gap-4 flex-wrap">
+                    {Object.entries(colorOptions).map(([colorName, colorHex]) => (
+                      <button
+                        key={colorName}
+                        onClick={() => handleColorChange(colorName)}
+                        className={`w-10 h-10 rounded-full transition duration-300  hover:scale-110 ${colors.includes(colorName) ? 'border-4 border-blue-500' : 'border-2 border-gray-300'}`}
+                        style={{ backgroundColor: colorHex }}
+                      />
+                    ))}
+                  </div>
+                </div>
+                <div className="form-group">
+                  <label htmlFor="description" className="block text-sm font-medium text-gray-700">Description</label>
+                  <textarea
+                    id="description"
+                    className="w-full p-3 border border-gray-300 rounded-lg"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    placeholder="Brève desciption du produit"
+                    rows="4"
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                  <div className="form-group">
+                    <label htmlFor="product-id" className="block text-sm font-medium text-gray-700">Numéro d&apos;étiquette</label>
+                    <input
+                      type="number"
+                      id="product-id"
+                      placeholder="Enter product description"
+                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                      value={tagNumber}
+                      onChange={(e) => setTagNumber(e.target.value)}
+                    />
+                  </div>
+
+                  {/* Spécifier si c'est un échantillon ou un produit international */}
+                  <div className="">
+                    <label className="flex items-center gap-2 text-sm text-gray-700">
+                      <input
+                        type="checkbox"
+                        checked={isSample}
+                        onChange={() => setIsSample(!isSample)}
+                      />
+                      C&apos;est un échantillon
+                    </label>
+                    {isSample && (
+                      <div className="mt-4">
+                        <h5 className="text-sm font-medium text-gray-700">Quantité :</h5>
+                        <input
+                          type="number"
+                          value={quantity}
+                          onChange={(e) => setQuantity(e.target.value)}
+
+                          min="1"
+                          className="w-full px-4 py-2 text-sm border border-gray-300 rounded-md"
+                        />
+                      </div>
+                    )}
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
         </form>
       </div>
     </div>

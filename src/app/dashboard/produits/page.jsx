@@ -1,48 +1,69 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { Icon } from "@iconify/react";
+import {db} from "../../../lib/firebase.js";
+import { collection, getDocs } from "firebase/firestore";
 
 const ProductTable = () => {
   const [products, setProducts] = useState([
-    {
-      id: 1,
-      name: "Black T-shirt",
-      size: ["S", "M", "L", "XL"],
-      price: 80,
-      stock: 486,
-      sold: 155,
-      category: "Vêtements homme",
-      subcategory: "T-shirts",
-    },
-    {
-      id: 2,
-      name: "White Sneakers",
-      size: ["38", "39", "40", "41"],
-      price: 120,
-      stock: 200,
-      sold: 50,
-      category: "Chaussures",
-      subcategory: "Sneakers",
-    },
+    // {
+    //   id: 1,
+    //   name: "Black T-shirt",
+    //   size: ["S", "M", "L", "XL"],
+    //   price: 80,
+    //   stock: 486,
+    //   sold: 155,
+    //   category: "Vêtements homme",
+    //   subcategory: "T-shirts",
+    // },
+    // {
+    //   id: 2,
+    //   name: "White Sneakers",
+    //   size: ["38", "39", "40", "41"],
+    //   price: 120,
+    //   stock: 200,
+    //   sold: 50,
+    //   category: "Chaussures",
+    //   subcategory: "Sneakers",
+    // },
   ]);
+
+  const[fetchData, setFetchData] = useState([])
+
+useEffect(() =>
+   {
+    fetchdata()
+   },[])
+
+   const fetchdata = async () => {
+    try {
+      const querySnapshot = await getDocs(collection(db, "products")); // Remplace "products" par le bon nom de ta collection
+      const snap = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      setFetchData(snap); // Mettre à jour le state
+      console.log(snap);
+    } catch (error) {
+      console.error("Erreur lors de la récupération des produits :", error);
+    }
+  };
 
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedSubcategory, setSelectedSubcategory] = useState("");
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
-  const filteredProducts = products.filter((product) => {
-    const matchesSearch = product.name
-      .toLowerCase()
-      .includes(searchQuery.toLowerCase());
+  const filteredProducts = [...products, ...fetchData].filter((product) => {
+    const name = product.name || ""; // S'assure que name est une string
+    const matchesSearch = name.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory =
       selectedCategory === "" || product.category === selectedCategory;
     const matchesSubcategory =
       selectedSubcategory === "" || product.subcategory === selectedSubcategory;
-
+  
     return matchesSearch && matchesCategory && matchesSubcategory;
   });
+  
+  
 
   return (
     <div className="p-8 bg">
@@ -73,7 +94,7 @@ const ProductTable = () => {
                 </button>
               </div>
 
-              <a href="/produits/creer">
+              <a href="/dashboard/produits/creer">
                 <button className="bg-orange-500 text-white px-4 py-2 rounded-lg w-full mb-2">
                   Ajouter
                 </button>
@@ -151,14 +172,15 @@ const ProductTable = () => {
                     </div>
                     <div>
                       <p className="font-bold text-black">{product.name}</p>
-                      <p className="text-sm text-gray-700">
+                      {/* <p className="text-sm text-gray-700">
                         Taille: {product.size.join(", ")}
-                      </p>
+                      </p> */}
                     </div>
                   </div>
                 </td>
                 <td className="text-[#262d35] p-2">
-                  ${product.price.toFixed(2)}
+                  {/* ${product.price.toFixed(2)} */}
+                  {product.price} F CFA
                 </td>
                 <td className="text-[#262d35] p-2">
                   <p className="text-[#262d35]">{product.stock} Items Left</p>
