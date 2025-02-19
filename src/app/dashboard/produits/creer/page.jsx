@@ -6,7 +6,7 @@ import { WiCloudUp } from "react-icons/wi";
 // import ProduitInformation from "../../../components/Forme.jsx";
 import { db, storage } from "../../../../lib/firebase.js";
 import { addDoc, collection } from "firebase/firestore";
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { uploadBytesResumable, ref, getDownloadURL } from "firebase/storage";
 
 const ProductCard = () => {
   const [name, setName] = useState("");
@@ -24,10 +24,6 @@ const ProductCard = () => {
   // const [tags, setTags] = useState([]);
   const [isSample, setIsSample] = useState(false); // Pour savoir si c'est un échantillon
   const [quantity, setQuantity] = useState(1); // Quantité pour l'échantillon
-
-
-  const dbref = collection(db, "Products")
-
 
 
   const handleSizeChange = (sizeSelected) => {
@@ -58,39 +54,22 @@ const ProductCard = () => {
     gray: '#9ca3af',
   };
 
-
-
-  
-  const uploadImage = (file) => {
-    if (!file) return;
-  
-    try {
-      const storageRef = ref(storage, `images/${file.name}`);
-    console.log(`storageRef ${storageRef}`);
-    const uploadTask = uploadBytesResumable(storageRef, file);
-    console.log(`Upload task ${uploadTask}`);
-  
-    return new Promise((resolve, reject) => {
-      uploadTask.on(
-        "state_changed",
-        (snapshot) => {
-          // Progression de l'upload (optionnel)
-          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          console.log(`Upload en cours : ${progress}%`);
-        },
-        (error) => reject(error), // Gérer les erreurs
-        async () => {
-          // Récupérer l'URL après l'upload
-          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-          resolve(downloadURL);
-        }
-      );
-    });
-    } catch (error) {
-      console.log(`error ${error}` );
-    }
+  const uploadImage = async (file) =>{
     
-  };
+    const storageRef = ref(storage, `images/${file.name}`);
+    uploadBytesResumable(storageRef, file)
+    .then(() =>{
+        console.log('upload success');
+        getDownloadURL(ref(storage, `images/${file.name}`))
+        .then((url) => {
+          setImage(url);
+           
+        })
+    });
+    //setOldImageName(image.name)
+    
+}
+
 
   const handleImageChange = async (e) => {
     const file = e.target.files[0]; // Récupérer seulement le premier fichier
@@ -103,9 +82,8 @@ const ProductCard = () => {
     console.log("url image:" , file)
 
     try {
-      const url = await uploadImage(file)
-      console.log("Image uploaded :", url);
-      setImage(url);
+       await uploadImage(file)
+       
      } catch (error) {
        console.error("Erreur lors de l'upload de l'image :", error);
        alert("Erreur lors de l'upload de l'image. Réessayez !");
