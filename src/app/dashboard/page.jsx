@@ -100,12 +100,6 @@ export default function Test() {
         <div className="row">
           <div className="col-xxl-5">
             <div className="row">
-              {/* <div className="col-12">
-                <div className="bg-[#ffe3d6] text-[14px] text-[#7a2b31] p-3 rounded-xl mb-3">
-                  We regret to inform you that our server is currently
-                  experiencing technical difficulties.
-                </div>
-              </div> */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                 <div className="bg-white rounded-lg ">
                   <div className="rounded-lg overflow-hidden">
