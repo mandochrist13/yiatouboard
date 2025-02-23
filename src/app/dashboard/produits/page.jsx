@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { Icon } from "@iconify/react";
 import { db } from "@/lib/firebase";
-import { collection, getDocs, listCollections, doc, getDoc } from "firebase/firestore";
+import { collection, getDocs, deleteDoc, doc, updateDoc } from "firebase/firestore";
 
 const ProductTable = () => {
   const [products, setProducts] = useState([]);
@@ -30,6 +30,25 @@ const ProductTable = () => {
     }
   };
 
+  const handleDelete = async (productId) => {
+    try {
+      const docRef = doc(db, 'products', productId)
+      await deleteDoc(docRef)
+      console.log(`Document ${productId} supprimé avec succès`);
+    } catch (error) {
+      console.log("Erreur lors de la suppression :", error);
+    }
+  }
+
+  const handleUpdate = async (productId) => {
+    try {
+      const docRef = doc(db, 'products', productId);
+      await updateDoc(docRef, updatedFields);
+      console.log(`Document ${productId} mis à jour avec succès`);
+    } catch (error) {
+      console.log("Erreur lors de la mise à jour :", error);
+    }
+  }
 
 
   useEffect(() => {
