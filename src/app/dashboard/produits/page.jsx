@@ -152,6 +152,7 @@ const ProductTable = () => {
               <th className="p-2">Stock</th>
               <th className="p-2">Catégorie</th>
               <th className="p-2">Sous catégorie</th>
+              <th className="p-2"> Action</th>
             </tr>
           </thead>
           <tbody>
@@ -192,6 +193,28 @@ const ProductTable = () => {
                 </td>
                 <td className="text-[#262d35] p-2">{product.category}</td>
                 <td className="text-[#262d35] p-2">{product.subcategory}</td>
+                <td className="text-center p-2"> <div className="flex h-full w-full gap-2">
+                  <button
+                    href="#!"
+                    className="btn btn-light bg-gray-100 text-gray-800 px-2 py-1 rounded-md hover:bg-gray-200 transition-all duration-300"
+                  >
+                    <Icon icon="solar:eye-broken" />
+                  </button>
+                  <button
+                    href="#!"
+                    className="btn bg-orange-500 text-white px-2 py-1 rounded-md hover:bg-orange-600 transition-all duration-300"
+                  >
+                    <Icon icon="solar:pen-2-broken" />
+                  </button>
+                  <button
+                    href="#!"
+                    className="btn bg-red-500 text-white px-2 py-1 rounded-md hover:bg-red-600 transition-all duration-300"
+                  >
+                    <Icon icon="solar:trash-bin-minimalistic-2-broken" />
+                  </button>
+                </div>
+
+                </td>
               </tr>
             ))}
           </tbody>
