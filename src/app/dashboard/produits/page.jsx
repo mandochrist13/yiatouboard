@@ -2,55 +2,40 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { Icon } from "@iconify/react";
-import {db} from "../../../lib/firebase.js";
-import { collection, getDocs } from "firebase/firestore";
+import { db } from "@/lib/firebase";
+import { collection, getDocs, listCollections, doc, getDoc } from "firebase/firestore";
 
 const ProductTable = () => {
-  const [products, setProducts] = useState([
-    // {
-    //   id: 1,
-    //   name: "Black T-shirt",
-    //   size: ["S", "M", "L", "XL"],
-    //   price: 80,
-    //   stock: 486,
-    //   sold: 155,
-    //   category: "Vêtements homme",
-    //   subcategory: "T-shirts",
-    // },
-    // {
-    //   id: 2,
-    //   name: "White Sneakers",
-    //   size: ["38", "39", "40", "41"],
-    //   price: 120,
-    //   stock: 200,
-    //   sold: 50,
-    //   category: "Chaussures",
-    //   subcategory: "Sneakers",
-    // },
-  ]);
-
-  const[fetchData, setFetchData] = useState([])
-
-useEffect(() =>
-   {
-    fetchdata()
-   },[])
-
-   const fetchdata = async () => {
-    try {
-      const querySnapshot = await getDocs(collection(db, "products")); // Remplace "products" par le bon nom de ta collection
-      const snap = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-      setFetchData(snap); // Mettre à jour le state
-      console.log(snap);
-    } catch (error) {
-      console.error("Erreur lors de la récupération des produits :", error);
-    }
-  };
-
+  const [products, setProducts] = useState([]);
+  const [fetchData, setFetchData] = useState([])
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedSubcategory, setSelectedSubcategory] = useState("");
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+
+
+  const fetchdata = async () => {
+
+    try {
+      try {
+        const querySnapshot = await getDocs(collection(db, "products")); // Remplace "products" par le bon nom de ta collection
+        const snap = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+        setFetchData(snap); // Mettre à jour le state
+        console.log(snap);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des produits :", error);
+      }
+    } catch (error) {
+      console.log("Erreur lors de la récupération des produits :", error);
+    }
+  };
+
+
+
+  useEffect(() => {
+    fetchdata()
+
+  }, [])
 
   const filteredProducts = [...products, ...fetchData].filter((product) => {
     const name = product.name || ""; // S'assure que name est une string
@@ -59,11 +44,11 @@ useEffect(() =>
       selectedCategory === "" || product.category === selectedCategory;
     const matchesSubcategory =
       selectedSubcategory === "" || product.subcategory === selectedSubcategory;
-  
+
     return matchesSearch && matchesCategory && matchesSubcategory;
   });
-  
-  
+
+
 
   return (
     <div className="p-8 bg">

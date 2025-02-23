@@ -15,37 +15,29 @@ export default function LoginPage() {
   const router = useRouter();
 
 
-const handleLogin = async () => {
-  try {
-    const response = await fetch("/api/v1/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password }),
-    });
+  const handleLogin = async () => {
 
-    if (!response.ok) {
-      throw new Error("Échec de la connexion");
+    console.log( `user email:${email} \n password: ${password}`)
+    try {
+      signInWithEmailAndPassword(Auth, email, password)
+        .then((userCredential) => {
+          // Signed in 
+          const user = userCredential.user;
+          
+          console.log('user :', user.accessToken)
+          Cookies.set("authToken", user.accessToken, { expires: 7, secure: true });
+          console.log("Connexion réussie, redirection vers /dashboard...");
+          router.push("/dashboard");
+          // ...
+        })
+        .catch((error) => {
+          console.log('Erreur :', error)
+        });
+
+    } catch (error) {
+      console.log("Erreur de connexion:", error);
     }
-
-    const data = await response.json();
-    console.log("Réponse du serveur:", data);
-
-    if (data.token) {
-      // Stocker le token dans les cookies avec une expiration de 7 jours
-      Cookies.set("authToken", data.token, { expires: 7, secure: true });
-
-      console.log("Connexion réussie, redirection vers /dashboard...");
-      router.push("/dashboard");
-    } else {
-      console.error("Aucun token reçu, vérifie la réponse de l'API");
-    }
-
-  } catch (error) {
-    console.error("Erreur de connexion:", error);
-  }
-};
+  };
 
 
   useEffect(() => {
@@ -75,7 +67,7 @@ const handleLogin = async () => {
         router.push("/dashboard");
       })
       .catch((error) => {
-        console.error("Erreur d'authentification Google:", error);
+        console.log("Erreur d'authentification Google:", error);
       });
   };
 
