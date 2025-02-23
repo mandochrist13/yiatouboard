@@ -6,7 +6,7 @@ import { WiCloudUp } from "react-icons/wi";
 // import ProduitInformation from "../../../components/Forme.jsx";
 import { db, storage } from "../../../../lib/firebase.js";
 import { addDoc, collection } from "firebase/firestore";
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { uploadBytesResumable, ref, getDownloadURL } from "firebase/storage";
 
 const ProductCard = () => {
   const [name, setName] = useState("");
@@ -24,10 +24,6 @@ const ProductCard = () => {
   // const [tags, setTags] = useState([]);
   const [isSample, setIsSample] = useState(false); // Pour savoir si c'est un échantillon
   const [quantity, setQuantity] = useState(1); // Quantité pour l'échantillon
-
-
-  const dbref = collection(db, "Products")
-
 
 
   const handleSizeChange = (sizeSelected) => {
@@ -58,39 +54,22 @@ const ProductCard = () => {
     gray: '#9ca3af',
   };
 
+  const uploadImage = async (file) => {
 
+    const storageRef = ref(storage, `images/${file.name}`);
+    uploadBytesResumable(storageRef, file)
+      .then(() => {
+        console.log('upload success');
+        getDownloadURL(ref(storage, `images/${file.name}`))
+          .then((url) => {
+            setImage(url);
 
-  
-  const uploadImage = (file) => {
-    if (!file) return;
-  
-    try {
-      const storageRef = ref(storage, `images/${file.name}`);
-    console.log(`storageRef ${storageRef}`);
-    const uploadTask = uploadBytesResumable(storageRef, file);
-    console.log(`Upload task ${uploadTask}`);
-  
-    return new Promise((resolve, reject) => {
-      uploadTask.on(
-        "state_changed",
-        (snapshot) => {
-          // Progression de l'upload (optionnel)
-          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          console.log(`Upload en cours : ${progress}%`);
-        },
-        (error) => reject(error), // Gérer les erreurs
-        async () => {
-          // Récupérer l'URL après l'upload
-          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-          resolve(downloadURL);
-        }
-      );
-    });
-    } catch (error) {
-      console.log(`error ${error}` );
-    }
-    
-  };
+          })
+      });
+    //setOldImageName(image.name)
+
+  }
+
 
   const handleImageChange = async (e) => {
     const file = e.target.files[0]; // Récupérer seulement le premier fichier
@@ -100,16 +79,15 @@ const ProductCard = () => {
       return;
     }
 
-    console.log("url image:" , file)
+    console.log("url image:", file)
 
     try {
-      const url = await uploadImage(file)
-      console.log("Image uploaded :", url);
-      setImage(url);
-     } catch (error) {
-       console.error("Erreur lors de l'upload de l'image :", error);
-       alert("Erreur lors de l'upload de l'image. Réessayez !");
-     }
+      await uploadImage(file)
+
+    } catch (error) {
+      console.error("Erreur lors de l'upload de l'image :", error);
+      alert("Erreur lors de l'upload de l'image. Réessayez !");
+    }
   };
 
 
@@ -144,7 +122,7 @@ const ProductCard = () => {
 
 
   const handleCreateProduct = async () => {
-    if (!name || !category || !price || !description || !image) {
+    if (!name || !category || !price || !description ) {
       alert("Veuillez remplir tout les champs")
       return;
     }
@@ -164,21 +142,11 @@ const ProductCard = () => {
       quantity: parseInt(quantity),
     };
 
+    console.log('data :', productData)
+
     try {
-      const response = await fetch("/api/v1/products", {
-        method: "POST",
-        // mode: 'no-cors',
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(productData),
-      });
 
-      const docRef = await addDoc(collection(db, "Products"), productData);
-
-      if (!response.ok) {
-        throw new Error("Erreur lors de la création du produit");
-      }
+      const docRef = await addDoc(collection(db, "products"), productData);
 
       console.log("Produit ajouté avec ID :", docRef.id);
       alert("Produit ajouté avec succès !");
