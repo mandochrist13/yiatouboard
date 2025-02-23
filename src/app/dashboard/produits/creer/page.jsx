@@ -54,21 +54,21 @@ const ProductCard = () => {
     gray: '#9ca3af',
   };
 
-  const uploadImage = async (file) =>{
-    
+  const uploadImage = async (file) => {
+
     const storageRef = ref(storage, `images/${file.name}`);
     uploadBytesResumable(storageRef, file)
-    .then(() =>{
+      .then(() => {
         console.log('upload success');
         getDownloadURL(ref(storage, `images/${file.name}`))
-        .then((url) => {
-          setImage(url);
-           
-        })
-    });
+          .then((url) => {
+            setImage(url);
+
+          })
+      });
     //setOldImageName(image.name)
-    
-}
+
+  }
 
 
   const handleImageChange = async (e) => {
@@ -79,15 +79,15 @@ const ProductCard = () => {
       return;
     }
 
-    console.log("url image:" , file)
+    console.log("url image:", file)
 
     try {
-       await uploadImage(file)
-       
-     } catch (error) {
-       console.error("Erreur lors de l'upload de l'image :", error);
-       alert("Erreur lors de l'upload de l'image. Réessayez !");
-     }
+      await uploadImage(file)
+
+    } catch (error) {
+      console.error("Erreur lors de l'upload de l'image :", error);
+      alert("Erreur lors de l'upload de l'image. Réessayez !");
+    }
   };
 
 
@@ -122,7 +122,7 @@ const ProductCard = () => {
 
 
   const handleCreateProduct = async () => {
-    if (!name || !category || !price || !description) {
+    if (!name || !category || !price || !description ) {
       alert("Veuillez remplir tout les champs")
       return;
     }
@@ -142,21 +142,11 @@ const ProductCard = () => {
       quantity: parseInt(quantity),
     };
 
+    console.log('data :', productData)
+
     try {
-      const response = await fetch("/api/v1/products", {
-        method: "POST",
-        // mode: 'no-cors',
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(productData),
-      });
 
-      const docRef = await addDoc(collection(db, "Products"), productData);
-
-      if (!response.ok) {
-        throw new Error("Erreur lors de la création du produit");
-      }
+      const docRef = await addDoc(collection(db, "products"), productData);
 
       console.log("Produit ajouté avec ID :", docRef.id);
       alert("Produit ajouté avec succès !");
