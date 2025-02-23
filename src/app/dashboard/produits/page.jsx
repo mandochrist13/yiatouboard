@@ -35,6 +35,7 @@ const ProductTable = () => {
       const docRef = doc(db, 'products', productId)
       await deleteDoc(docRef)
       console.log(`Document ${productId} supprimé avec succès`);
+      fetchdata()
     } catch (error) {
       console.log("Erreur lors de la suppression :", error);
     }
@@ -53,7 +54,6 @@ const ProductTable = () => {
 
   useEffect(() => {
     fetchdata()
-
   }, [])
 
   const filteredProducts = [...products, ...fetchData].filter((product) => {
@@ -156,9 +156,9 @@ const ProductTable = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredProducts.map((product) => (
+            {filteredProducts.map((product, index) => (
               <tr
-                key={product.id}
+                key={index}
                 className="border-y bg-white hover:bg-white/50 text-center"
               >
                 <td className="p-2">
@@ -209,6 +209,7 @@ const ProductTable = () => {
                   <button
                     href="#!"
                     className="btn bg-red-500 text-white px-2 py-1 rounded-md hover:bg-red-600 transition-all duration-300"
+                    onClick={()=> handleDelete(product.id)}
                   >
                     <Icon icon="solar:trash-bin-minimalistic-2-broken" />
                   </button>
