@@ -122,7 +122,7 @@ const ProductCard = () => {
 
 
   const handleCreateProduct = async () => {
-    if (!name || !category || !price || !description || !image) {
+    if (!name || !category || !price || !description) {
       alert("Veuillez remplir tout les champs")
       return;
     }
