@@ -6,6 +6,18 @@ import { Icon } from "@iconify/react";
 import { db } from "@/lib/firebase";
 import { motion } from "framer-motion";
 import { WiCloudUp } from "react-icons/wi";
+import { Button } from "@/components/ui/button"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 // import ProduitInformation from "../../../components/Forme.jsx";
 // import { db, storage } from "../../../../lib/firebase.js";
 // import { addDoc, collection } from "firebase/firestore";
@@ -354,13 +366,282 @@ const ProductTable = () => {
                   >
                     <Icon icon="solar:eye-broken" />
                   </button>
-                  <button
-                    type="button"
-                    onClick={() => setOpenModal(true)}
-                    className="btn bg-orange-500 text-white px-2 py-1 rounded-md hover:bg-orange-600 transition-all duration-300"
-                  >
-                    <Icon icon="solar:pen-2-broken" />
-                  </button>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <button
+                        type="button"
+                        // onClick={() => setOpenModal(true)}
+                        className="btn bg-orange-500 text-white px-2 py-1 rounded-md hover:bg-orange-600 transition-all duration-300"
+                      >
+                        <Icon icon="solar:pen-2-broken" />
+                      </button>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-[725px] h-[80%] overflow-y-auto">
+                      <DialogHeader>
+                        <DialogTitle>Modifier produit</DialogTitle>
+                        <DialogDescription>
+                          Make changes to your profile here. Click save when you're done.
+                        </DialogDescription>
+                      </DialogHeader>
+                      {/* <div className="grid gap-4 py-4">
+                        <div className="grid grid-cols-4 items-center gap-4">
+                          <Label htmlFor="name" className="text-right">
+                            Name
+                          </Label>
+                          <Input id="name" value="Pedro Duarte" className="col-span-3" />
+                        </div>
+                        <div className="grid grid-cols-4 items-center gap-4">
+                          <Label htmlFor="username" className="text-right">
+                            Username
+                          </Label>
+                          <Input id="username" value="@peduarte" className="col-span-3" />
+                        </div>
+                      </div> */}
+                      <div className="space-y-4 text-gray-700">
+                        {/* <Image
+                  src="/p-1.png"
+                  width={1000}
+                  height={1000}
+                  alt={`Produit`}
+                  className="object-cover w-40 rounded-lg mb-4"
+                /> */}
+
+                      </div>
+                      <form onSubmit={handleSubmit} className="space-y-4">
+                        <div className="border-2 border-dashed p-8 rounded-md flex flex-col items-center">
+                          <label
+
+                            multiple accept="image/*"
+                            className="h-20 w-20 flex items-center justify-center cursor-pointer"
+                          >
+                            <WiCloudUp className="text-orange-500 text-6xl" />
+                          </label>
+                          <input
+                            // id="file-upload"
+                            type="file"
+                            accept="image/*"
+                            // value={images}
+                            ref={fileInputRef}
+                            //  onChange={handleFileChange}
+                            onChange={handleImageChange}
+                            className=" "
+                          // multiple  Permet l'ajout de plusieurs fichiers
+                          />
+                          <div className="mt-4 flex flex-wrap gap-2">
+                            {image && (
+                              <Image
+                                src={image}
+                                alt="Image sélectionnée"
+                                width={100}
+                                height={100}
+                              />
+                            )}
+                          </div>
+                          <p className="text-gray-600 text-center mt-4">
+                            Déposez vos images ici, ou{" "}
+                            <span htmlFor="file-upload" className="text-blue-500 cursor-pointer">
+                              cliquez pour parcourir
+                            </span>
+                          </p>
+                          <p className="text-sm text-gray-400 mt-2">
+                            PNG, JPG et GIF sont autorisés.
+                          </p>
+                        </div>
+
+                        {/* <ProduitInformation /> */}
+                        <div className="max-w-4xl mx-auto p-6  bg-white shadow-lg rounded-xl">
+                          <div className="text-center mb-8">
+                            <h4 className="text-2xl font-medium text-gray-800">Informations sur le produit</h4>
+                          </div>
+
+                          <div className="space-y-8">
+                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                              <div className="form-group mb-4">
+                                <label htmlFor="productName" className="block text-gray-700 font-medium">
+                                  Nom du produit
+                                </label>
+                                <input
+                                  type="text"
+                                  id="productName"
+                                  value={name}
+                                  onChange={(e) => setName(e.target.value)}
+                                  placeholder="Nom des produits"
+                                  className="w-full p-2 border border-gray-300 rounded-md"
+                                  required
+                                />
+                              </div>
+
+                              <div className="form-group mb-4">
+                                <label htmlFor="brand" className="block text-gray-700 font-medium">
+                                  Poids
+                                </label>
+                                <input
+                                  type="text"
+                                  id="brand"
+                                  value={weight}
+                                  onChange={(e) => setWeight(e.target.value)}
+                                  placeholder="En g et Kg"
+                                  className="w-full p-2 border border-gray-300 rounded-md"
+                                  required
+                                />
+                              </div>
+
+                              <div className="form-group mb-4">
+                                <label htmlFor="brand" className="block text-gray-700 font-medium">
+                                  Prix
+                                </label>
+                                <input
+                                  type="text"
+                                  id="brand"
+                                  value={price}
+                                  onChange={(e) => setPrice(e.target.value)}
+                                  placeholder="En F CFA"
+                                  className="w-full p-2 border border-gray-300 rounded-md"
+                                  required
+                                />
+                              </div>
+
+                             
+                              <div className="form-group">
+                                <label htmlFor="description" className="block text-sm font-medium text-gray-700">Description</label>
+                                <textarea
+                                  id="description"
+                                  className="w-full p-3 border border-gray-300 rounded-lg"
+                                  value={description}
+                                  onChange={(e) => setDescription(e.target.value)}
+                                  placeholder="Brève desciption du produit"
+                                  rows="4"
+                                />
+                              </div>
+                              <div>
+                                {/* Section Category */}
+                                <h5 className="text-sm font-medium text-gray-700 mt-4">Catégorie :</h5>
+                                <select
+                                  value={category}
+                                  onChange={handleCategoryChange}
+                                  className="w-full px-4 py-2 text-sm border border-gray-300 rounded-md"
+                                >
+                                  <option value="">Sélectionnez une catégorie</option>
+                                  <option value="T-shirt">T-shirt</option>
+                                  <option value="Chaussures">Chaussures</option>
+                                </select>
+
+                                {/* Section Subcategory */}
+                                {category && (
+                                  <>
+                                    <h5 className="text-sm font-medium text-gray-700 mt-6">
+                                      Sous-catégorie :
+                                    </h5>
+                                    <select
+                                      value={subcategory}
+                                      onChange={(e) => setSubcategory(e.target.value)}
+                                      className="w-full px-4 py-2 text-sm border border-gray-300 rounded-md"
+                                    >
+                                      <option value="">Sélectionnez une sous-catégorie</option>
+                                      {category === "T-shirt" && (
+                                        <>
+                                          <option value="M">M</option>
+                                          <option value="L">L</option>
+                                          <option value="XL">XL</option>
+                                        </>
+                                      )}
+                                      {category === "Chaussures" && (
+                                        <>
+                                          <option value="39">39</option>
+                                          <option value="40">40</option>
+                                          <option value="41">41</option>
+                                        </>
+                                      )}
+                                    </select>
+                                  </>
+                                )}
+
+                                {/* Dynamic Input based on selected category */}
+                                {category === "T-shirt" && (
+                                  <>
+                                    <h5 className="text-sm font-medium text-gray-700 mt-6">Taille :</h5>
+                                    <div className="flex gap-2 mt-2">
+                                      {["S", "M", "L", "XL"].map((sizeOption) => (
+                                        <a
+                                          key={sizeOption}
+                                          className="px-4 py-2 text-sm rounded-lg text-black bg-gray-200 transition-transform  hover:scale-105"
+                                          onClick={() => setSize(sizeOption)}
+                                        >
+                                          {sizeOption}
+                                        </a>
+                                      ))}
+                                    </div>
+                                  </>
+                                )}
+
+                                {category === "Chaussures" && (
+                                  <>
+                                    <h5 className="text-sm font-medium text-gray-700 mt-6">Pointure :</h5>
+                                    <div className="flex gap-2 mt-2">
+                                      {["39", "40", "41"].map((sizeOption) => (
+                                        <a
+                                          key={sizeOption}
+                                          className="px-4 py-2 text-sm rounded-lg text-black bg-gray-200 transition-transform  hover:scale-105"
+                                          onClick={() => setShoeSize(sizeOption)}
+                                        >
+                                          {sizeOption}
+                                        </a>
+                                      ))}
+                                    </div>
+                                  </>
+                                )}
+                              </div>
+
+
+                              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                                <div className="form-group">
+                                  <label htmlFor="product-id" className="block text-sm font-medium text-gray-700">Numéro d&apos;étiquette</label>
+                                  <input
+                                    type="number"
+                                    id="product-id"
+                                    placeholder="Enter product description"
+                                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                    value={tagNumber}
+                                    onChange={(e) => setTagNumber(e.target.value)}
+                                  />
+                                </div>
+
+                                {/* Spécifier si c'est un échantillon ou un produit international */}
+                                <div className="">
+                                  <label className="flex items-center gap-2 text-sm text-gray-700">
+                                    <input
+                                      type="checkbox"
+                                      checked={isSample}
+                                      onChange={() => setIsSample(!isSample)}
+                                    />
+                                    C&apos;est un échantillon
+                                  </label>
+                                  {isSample && (
+                                    <div className="mt-4">
+                                      <h5 className="text-sm font-medium text-gray-700">Quantité :</h5>
+                                      <input
+                                        type="number"
+                                        value={quantity}
+                                        onChange={(e) => setQuantity(e.target.value)}
+
+                                        min="1"
+                                        className="w-full px-4 py-2 text-sm border border-gray-300 rounded-md"
+                                      />
+                                    </div>
+                                  )}
+                                </div>
+
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                      <DialogFooter>
+                        <Button type="submit">Save changes</Button>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
+
                   <button
 
                     className="btn bg-red-500 text-white px-2 py-1 rounded-md hover:bg-red-600 transition-all duration-300"
@@ -379,281 +660,7 @@ const ProductTable = () => {
       {/* Modal */}
 
 
-      {/* <!-- Main modal --> */}
-      <div className="flex flex-col items-center justify-center w-full">
-        <Modal size="sm" className="bg-black" show={openModal} onClose={() => setOpenModal(false)}>
-          <motion.div
-            initial={{ opacity: 0, y: -50 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 50 }}
-            transition={{ duration: 0.3 }}
-            className=""
-          >
-            <Modal.Header className="p-2">
-              <span className="text-xl font-bold ">Modifier produit</span>
-            </Modal.Header>
-            <Modal.Body>
-              <div className="space-y-4 text-gray-700">
-                {/* <Image
-                  src="/p-1.png"
-                  width={1000}
-                  height={1000}
-                  alt={`Produit`}
-                  className="object-cover w-40 rounded-lg mb-4"
-                /> */}
-
-              </div>
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="border-2 border-dashed p-8 rounded-md flex flex-col items-center">
-                  <label
-
-                    multiple accept="image/*"
-                    className="h-20 w-20 flex items-center justify-center cursor-pointer"
-                  >
-                    <WiCloudUp className="text-orange-500 text-6xl" />
-                  </label>
-                  <input
-                    // id="file-upload"
-                    type="file"
-                    accept="image/*"
-                    // value={images}
-                    ref={fileInputRef}
-                    //  onChange={handleFileChange}
-                    onChange={handleImageChange}
-                    className=" "
-                  // multiple  Permet l'ajout de plusieurs fichiers
-                  />
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    {image && (
-                      <Image
-                        src={image}
-                        alt="Image sélectionnée"
-                        width={100}
-                        height={100}
-                      />
-                    )}
-                  </div>
-                  <p className="text-gray-600 text-center mt-4">
-                    Déposez vos images ici, ou{" "}
-                    <span htmlFor="file-upload" className="text-blue-500 cursor-pointer">
-                      cliquez pour parcourir
-                    </span>
-                  </p>
-                  <p className="text-sm text-gray-400 mt-2">
-                    PNG, JPG et GIF sont autorisés.
-                  </p>
-                </div>
-
-                {/* <ProduitInformation /> */}
-                <div className="max-w-4xl mx-auto p-6  bg-white shadow-lg rounded-xl">
-                  <div className="text-center mb-8">
-                    <h4 className="text-2xl font-medium text-gray-800">Informations sur le produit</h4>
-                  </div>
-
-                  <div className="space-y-8">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                      <div className="form-group mb-4">
-                        <label htmlFor="productName" className="block text-gray-700 font-medium">
-                          Nom du produit
-                        </label>
-                        <input
-                          type="text"
-                          id="productName"
-                          value={name}
-                          onChange={(e) => setName(e.target.value)}
-                          placeholder="Nom des produits"
-                          className="w-full p-2 border border-gray-300 rounded-md"
-                          required
-                        />
-                      </div>
-
-                      <div className="form-group mb-4">
-                        <label htmlFor="brand" className="block text-gray-700 font-medium">
-                          Poids
-                        </label>
-                        <input
-                          type="text"
-                          id="brand"
-                          value={weight}
-                          onChange={(e) => setWeight(e.target.value)}
-                          placeholder="En g et Kg"
-                          className="w-full p-2 border border-gray-300 rounded-md"
-                          required
-                        />
-                      </div>
-
-                      <div className="form-group mb-4">
-                        <label htmlFor="brand" className="block text-gray-700 font-medium">
-                          Prix
-                        </label>
-                        <input
-                          type="text"
-                          id="brand"
-                          value={price}
-                          onChange={(e) => setPrice(e.target.value)}
-                          placeholder="En F CFA"
-                          className="w-full p-2 border border-gray-300 rounded-md"
-                          required
-                        />
-                      </div>
-
-                      {/* <div>
-                        <h5 className="text-sm font-medium text-gray-700">Couleurs:</h5>
-                        <div className="flex gap-4 flex-wrap">
-                          {Object.entries(colorOptions).map(([colorName, colorHex]) => (
-                            <button
-                              key={colorName}
-                              onClick={() => handleColorChange(colorName)}
-                              className={`w-10 h-10 rounded-full transition duration-300  hover:scale-110 ${colors.includes(colorName) ? 'border-4 border-blue-500' : 'border-2 border-gray-300'}`}
-                              style={{ backgroundColor: colorHex }}
-                            />
-                          ))}
-                        </div>
-                      </div> */}
-                      <div className="form-group">
-                        <label htmlFor="description" className="block text-sm font-medium text-gray-700">Description</label>
-                        <textarea
-                          id="description"
-                          className="w-full p-3 border border-gray-300 rounded-lg"
-                          value={description}
-                          onChange={(e) => setDescription(e.target.value)}
-                          placeholder="Brève desciption du produit"
-                          rows="4"
-                        />
-                      </div>
-                      <div>
-                          {/* Section Category */}
-                          <h5 className="text-sm font-medium text-gray-700 mt-4">Catégorie :</h5>
-                          <select
-                            value={category}
-                            onChange={handleCategoryChange}
-                            className="w-full px-4 py-2 text-sm border border-gray-300 rounded-md"
-                          >
-                            <option value="">Sélectionnez une catégorie</option>
-                            <option value="T-shirt">T-shirt</option>
-                            <option value="Chaussures">Chaussures</option>
-                          </select>
-
-                          {/* Section Subcategory */}
-                          {category && (
-                            <>
-                              <h5 className="text-sm font-medium text-gray-700 mt-6">
-                                Sous-catégorie :
-                              </h5>
-                              <select
-                                value={subcategory}
-                                onChange={(e) => setSubcategory(e.target.value)}
-                                className="w-full px-4 py-2 text-sm border border-gray-300 rounded-md"
-                              >
-                                <option value="">Sélectionnez une sous-catégorie</option>
-                                {category === "T-shirt" && (
-                                  <>
-                                    <option value="M">M</option>
-                                    <option value="L">L</option>
-                                    <option value="XL">XL</option>
-                                  </>
-                                )}
-                                {category === "Chaussures" && (
-                                  <>
-                                    <option value="39">39</option>
-                                    <option value="40">40</option>
-                                    <option value="41">41</option>
-                                  </>
-                                )}
-                              </select>
-                            </>
-                          )}
-
-                          {/* Dynamic Input based on selected category */}
-                          {category === "T-shirt" && (
-                            <>
-                              <h5 className="text-sm font-medium text-gray-700 mt-6">Taille :</h5>
-                              <div className="flex gap-2 mt-2">
-                                {["S", "M", "L", "XL"].map((sizeOption) => (
-                                  <a
-                                    key={sizeOption}
-                                    className="px-4 py-2 text-sm rounded-lg text-black bg-gray-200 transition-transform  hover:scale-105"
-                                    onClick={() => setSize(sizeOption)}
-                                  >
-                                    {sizeOption}
-                                  </a>
-                                ))}
-                              </div>
-                            </>
-                          )}
-
-                          {category === "Chaussures" && (
-                            <>
-                              <h5 className="text-sm font-medium text-gray-700 mt-6">Pointure :</h5>
-                              <div className="flex gap-2 mt-2">
-                                {["39", "40", "41"].map((sizeOption) => (
-                                  <a
-                                    key={sizeOption}
-                                    className="px-4 py-2 text-sm rounded-lg text-black bg-gray-200 transition-transform  hover:scale-105"
-                                    onClick={() => setShoeSize(sizeOption)}
-                                  >
-                                    {sizeOption}
-                                  </a>
-                                ))}
-                              </div>
-                            </>
-                          )}
-                        </div>
-
-
-                      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                        <div className="form-group">
-                          <label htmlFor="product-id" className="block text-sm font-medium text-gray-700">Numéro d&apos;étiquette</label>
-                          <input
-                            type="number"
-                            id="product-id"
-                            placeholder="Enter product description"
-                            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                            value={tagNumber}
-                            onChange={(e) => setTagNumber(e.target.value)}
-                          />
-                        </div>
-                        
-                        {/* Spécifier si c'est un échantillon ou un produit international */}
-                        <div className="">
-                          <label className="flex items-center gap-2 text-sm text-gray-700">
-                            <input
-                              type="checkbox"
-                              checked={isSample}
-                              onChange={() => setIsSample(!isSample)}
-                            />
-                            C&apos;est un échantillon
-                          </label>
-                          {isSample && (
-                            <div className="mt-4">
-                              <h5 className="text-sm font-medium text-gray-700">Quantité :</h5>
-                              <input
-                                type="number"
-                                value={quantity}
-                                onChange={(e) => setQuantity(e.target.value)}
-
-                                min="1"
-                                className="w-full px-4 py-2 text-sm border border-gray-300 rounded-md"
-                              />
-                            </div>
-                          )}
-                        </div>
-
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </form>
-            </Modal.Body>
-            {/* <Modal.Footer>
-              <button onClick={() => setOpenModal(false)} className="bg-red-500 hover:bg-red-600 text-white p-2 rounded-lg">
-                Fermer
-              </button>
-            </Modal.Footer> */}
-          </motion.div>
-        </Modal>
-      </div>
-
+    
 
     </div>
   );
