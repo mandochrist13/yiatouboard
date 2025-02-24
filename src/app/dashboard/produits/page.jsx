@@ -32,6 +32,21 @@ const ProductTable = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedSubcategory, setSelectedSubcategory] = useState("");
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+  //variable update produit
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState("");
+  const [image, setImage] = useState(""); // Pour gérer plusieurs images
+  const [category, setCategory] = useState("");
+  const [subcategory, setSubcategory] = useState("");
+  const [shoeSize, setShoeSize] = useState("");
+  const [size, setSize] = useState([]);
+  const [colors, setColors] = useState([]);
+  const [description, setDescription] = useState('');
+  const [tagNumber, setTagNumber] = useState(0);
+  const [weight, setWeight] = useState('');
+  // const [tags, setTags] = useState([]);
+  const [isSample, setIsSample] = useState(false); // Pour savoir si c'est un échantillon
+  const [quantity, setQuantity] = useState(1); // Quantité pour l'échantillon
 
 
   const fetchdata = async () => {
@@ -61,11 +76,28 @@ const ProductTable = () => {
     }
   }
 
-  const handleUpdate = async (productId) => {
+  const handleUpdate = async ( product) => {
+    const productData = {
+      name: name? name : product.name,
+      image: image? image: product.image,
+      category: category? category: product.category,
+      price: price? parseFloat(price) : product.price,
+      description: description? description : product.description,
+      subcategory: subcategory? subcategory: product.subcategory,
+      size: size? size : product.size,
+      weight: weight? weight: product.weight,
+      shoeSize: shoeSize? shoeSize: product.shoeSize,
+      isSample: isSample? isSample: product.isSample,
+      quantity: quantity? quantity: product.quantity,
+    };
+
+    console.log('data :', productData)
     try {
-      const docRef = doc(db, 'products', productId);
-      await updateDoc(docRef, updatedFields);
-      console.log(`Document ${productId} mis à jour avec succès`);
+      const docRef = doc(db, 'products', product.id);
+      await updateDoc(docRef, productData);
+      console.log(`Document ${product.id} mis à jour avec succès`);
+      setOpenModal(false)
+      fetchdata()
     } catch (error) {
       console.log("Erreur lors de la mise à jour :", error);
     }
@@ -86,22 +118,6 @@ const ProductTable = () => {
 
     return matchesSearch && matchesCategory && matchesSubcategory;
   });
-
-  const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
-  const [image, setImage] = useState(""); // Pour gérer plusieurs images
-  const [category, setCategory] = useState("");
-
-  const [subcategory, setSubcategory] = useState("");
-  const [shoeSize, setShoeSize] = useState("");
-  const [size, setSize] = useState([]);
-  const [colors, setColors] = useState([]);
-  const [description, setDescription] = useState('');
-  const [tagNumber, setTagNumber] = useState('');
-  const [weight, setWeight] = useState('');
-  // const [tags, setTags] = useState([]);
-  const [isSample, setIsSample] = useState(false); // Pour savoir si c'est un échantillon
-  const [quantity, setQuantity] = useState(1); // Quantité pour l'échantillon
 
 
   const handleSizeChange = (sizeSelected) => {
@@ -145,7 +161,6 @@ const ProductTable = () => {
           })
       });
     //setOldImageName(image.name)
-
   }
 
 
@@ -177,6 +192,7 @@ const ProductTable = () => {
   };
 
   const fileInputRef = useRef(null);
+
   const handleUploadSuccess = () => {
     if (fileInputRef.current) {
       fileInputRef.current.value = ""; // ✅ Réinitialise correctement le champ file
@@ -194,43 +210,6 @@ const ProductTable = () => {
     console.log("Échantillon:", isSample);
     if (isSample) {
       console.log("Quantité:", quantity);
-    }
-  };
-
-
-
-  const handleCreateProduct = async () => {
-    if (!name || !category || !price || !description) {
-      alert("Veuillez remplir tout les champs")
-      return;
-    }
-
-    const productData = {
-      name,
-      image,
-      category,
-      price: parseFloat(price),
-      description,
-      subcategory,
-      size,
-      colors,
-      weight,
-      shoeSize,
-      isSample,
-      quantity: parseInt(quantity),
-    };
-
-    console.log('data :', productData)
-
-    try {
-
-      const docRef = await addDoc(collection(db, "products"), productData);
-
-      console.log("Produit ajouté avec ID :", docRef.id);
-      alert("Produit ajouté avec succès !");
-    } catch (error) {
-      console.error("Erreur lors de l'ajout du produit :", error);
-      alert(error.message);
     }
   };
 
@@ -366,16 +345,17 @@ const ProductTable = () => {
                   >
                     <Icon icon="solar:eye-broken" />
                   </button>
-                  <Dialog>
+                  <Dialog open={openModal} onOpenChange={()=>setOpenModal(!openModal)}>
                     <DialogTrigger asChild>
                       <button
                         type="button"
-                        // onClick={() => setOpenModal(true)}
+                        onClick={() => setOpenModal(true)}
                         className="btn bg-orange-500 text-white px-2 py-1 rounded-md hover:bg-orange-600 transition-all duration-300"
                       >
                         <Icon icon="solar:pen-2-broken" />
                       </button>
                     </DialogTrigger>
+
                     <DialogContent className="sm:max-w-[725px] h-[80%] overflow-y-auto">
                       <DialogHeader>
                         <DialogTitle>Modifier produit</DialogTitle>
@@ -407,7 +387,7 @@ const ProductTable = () => {
                 /> */}
 
                       </div>
-                      <form onSubmit={handleSubmit} className="space-y-4">
+                      <div className="space-y-4">
                         <div className="border-2 border-dashed p-8 rounded-md flex flex-col items-center">
                           <label
 
@@ -463,7 +443,7 @@ const ProductTable = () => {
                                 <input
                                   type="text"
                                   id="productName"
-                                  value={name}
+                                  value={!name ? product.name : name}
                                   onChange={(e) => setName(e.target.value)}
                                   placeholder="Nom des produits"
                                   className="w-full p-2 border border-gray-300 rounded-md"
@@ -478,7 +458,7 @@ const ProductTable = () => {
                                 <input
                                   type="text"
                                   id="brand"
-                                  value={weight}
+                                  value={!weight ? product.weight : weight}
                                   onChange={(e) => setWeight(e.target.value)}
                                   placeholder="En g et Kg"
                                   className="w-full p-2 border border-gray-300 rounded-md"
@@ -493,7 +473,7 @@ const ProductTable = () => {
                                 <input
                                   type="text"
                                   id="brand"
-                                  value={price}
+                                  value={!price ? product.price : price}
                                   onChange={(e) => setPrice(e.target.value)}
                                   placeholder="En F CFA"
                                   className="w-full p-2 border border-gray-300 rounded-md"
@@ -501,13 +481,13 @@ const ProductTable = () => {
                                 />
                               </div>
 
-                             
+
                               <div className="form-group">
                                 <label htmlFor="description" className="block text-sm font-medium text-gray-700">Description</label>
                                 <textarea
                                   id="description"
                                   className="w-full p-3 border border-gray-300 rounded-lg"
-                                  value={description}
+                                  value={description ? description: product.description}
                                   onChange={(e) => setDescription(e.target.value)}
                                   placeholder="Brève desciption du produit"
                                   rows="4"
@@ -533,19 +513,18 @@ const ProductTable = () => {
                                       Sous-catégorie :
                                     </h5>
                                     <select
-                                      value={subcategory}
+                                      value={subcategory }
                                       onChange={(e) => setSubcategory(e.target.value)}
                                       className="w-full px-4 py-2 text-sm border border-gray-300 rounded-md"
                                     >
                                       <option value="">Sélectionnez une sous-catégorie</option>
-                                      {category === "T-shirt" && (
+                                      {category === "T-shirt" ? (
                                         <>
                                           <option value="M">M</option>
                                           <option value="L">L</option>
                                           <option value="XL">XL</option>
                                         </>
-                                      )}
-                                      {category === "Chaussures" && (
+                                      ): category === "Chaussures" &&(
                                         <>
                                           <option value="39">39</option>
                                           <option value="40">40</option>
@@ -557,7 +536,7 @@ const ProductTable = () => {
                                 )}
 
                                 {/* Dynamic Input based on selected category */}
-                                {category === "T-shirt" && (
+                                {category === "T-shirt" ?(
                                   <>
                                     <h5 className="text-sm font-medium text-gray-700 mt-6">Taille :</h5>
                                     <div className="flex gap-2 mt-2">
@@ -572,9 +551,7 @@ const ProductTable = () => {
                                       ))}
                                     </div>
                                   </>
-                                )}
-
-                                {category === "Chaussures" && (
+                                ):category === "Chaussures" &&  (
                                   <>
                                     <h5 className="text-sm font-medium text-gray-700 mt-6">Pointure :</h5>
                                     <div className="flex gap-2 mt-2">
@@ -601,8 +578,8 @@ const ProductTable = () => {
                                     id="product-id"
                                     placeholder="Enter product description"
                                     className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                                    value={tagNumber}
-                                    onChange={(e) => setTagNumber(e.target.value)}
+                                    value={!tagNumber? product.tagNumber : tagNumber}
+                                    onChange={(e) => setTagNumber(parseInt(e.target.value))}
                                   />
                                 </div>
 
@@ -611,7 +588,7 @@ const ProductTable = () => {
                                   <label className="flex items-center gap-2 text-sm text-gray-700">
                                     <input
                                       type="checkbox"
-                                      checked={isSample}
+                                      checked={isSample }
                                       onChange={() => setIsSample(!isSample)}
                                     />
                                     C&apos;est un échantillon
@@ -621,7 +598,7 @@ const ProductTable = () => {
                                       <h5 className="text-sm font-medium text-gray-700">Quantité :</h5>
                                       <input
                                         type="number"
-                                        value={quantity}
+                                        value={!quantity? product.quantity: quantity}
                                         onChange={(e) => setQuantity(e.target.value)}
 
                                         min="1"
@@ -635,9 +612,9 @@ const ProductTable = () => {
                             </div>
                           </div>
                         </div>
-                      </form>
+                      </div>
                       <DialogFooter>
-                        <Button type="submit">Save changes</Button>
+                        <Button onClick={()=> handleUpdate(product)}>Save changes</Button>
                       </DialogFooter>
                     </DialogContent>
                   </Dialog>
@@ -660,7 +637,7 @@ const ProductTable = () => {
       {/* Modal */}
 
 
-    
+
 
     </div>
   );
