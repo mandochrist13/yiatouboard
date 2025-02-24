@@ -10,20 +10,20 @@ import { AdminLink } from "./sidebar/AdminLink";
 const Link = [
   {
     id: 1,
-    href: "/dashboard",
+    href: "/admin/dashboard",
     icon: <Icon icon="solar:widget-5-bold-duotone" />,
     titre: "Dashboard",
   },
   {
     id: 6,
-    href: "/dashboard/global",
+    href: "/admin/global",
     icon: <Icon icon="solar:box-bold-duotone"/>,
     titre: "Global order",
     // icon-park-twotone:order
   },
   {
     id: 2,
-    href: "/dashboard/produits",
+    href: "/admin/produits",
     icon: <Icon icon="solar:t-shirt-bold-duotone" />,
     titre: " Produits",
   },
@@ -35,19 +35,19 @@ const Link = [
   // },
   {
     id: 7,
-     href: "/dashboard/sousCategorie",
+     href: "/admin/sousCategorie",
      icon: <Icon icon="solar:clipboard-list-bold-duotone" />,
      titre: "Categorie",
    },
   {
     id: 4,
-    href: "/dashboard/commission",
+    href: "/admin/commission",
     icon: <Icon icon="solar:users-group-two-rounded-bold-duotone" />,
     titre: "Commission",
   },
   {
     id: 5,
-    href: "/dashboard/order",
+    href: "/admin/order",
     icon: <Icon icon="solar:bag-smile-bold-duotone" />,
     titre: "Commande",
   },
@@ -61,7 +61,7 @@ const Link = [
   // },
   {
     id: 9,
-    href: "/dashboard/parametre",
+    href: "/admin/parametre",
     icon: <Icon icon="solar:settings-bold-duotone" />,
     titre: "Parametre",
   },

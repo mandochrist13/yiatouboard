@@ -27,7 +27,7 @@ export default function LoginPage() {
           console.log('user :', user.accessToken)
           Cookies.set("authToken", user.accessToken, { expires: 7, secure: true });
           console.log("Connexion réussie, redirection vers /dashboard...");
-          router.push("/dashboard");
+          router.push("/admin/dashboard");
           // ...
         })
         .catch((error) => {

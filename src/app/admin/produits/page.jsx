@@ -1,10 +1,10 @@
 "use client";
 import React, { useEffect, useState, useRef } from "react";
 import Image from "next/image";
-import { Modal } from "flowbite-react";
+
 import { Icon } from "@iconify/react";
 import { db } from "@/lib/firebase";
-import { motion } from "framer-motion";
+
 import { WiCloudUp } from "react-icons/wi";
 import { Button } from "@/components/ui/button"
 import {
@@ -16,12 +16,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-// import ProduitInformation from "../../../components/Forme.jsx";
-// import { db, storage } from "../../../../lib/firebase.js";
-// import { addDoc, collection } from "firebase/firestore";
-// import { uploadBytesResumable, ref, getDownloadURL } from "firebase/storage";
 import { collection, getDocs, deleteDoc, doc, updateDoc } from "firebase/firestore";
 
 const ProductTable = () => {
@@ -243,7 +237,7 @@ const ProductTable = () => {
                 </button>
               </div>
 
-              <a href="/dashboard/produits/creer">
+              <a href="/admin/produits/creer">
                 <button className="bg-orange-500 text-white px-4 py-2 rounded-lg w-full mb-2">
                   Ajouter
                 </button>
