@@ -43,7 +43,7 @@ export default function LoginPage() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(Auth, (user) => {
       if (user) {
-        router.push("/dashboard");  // Redirige si l'utilisateur est déjà connecté
+        router.push("/admin/dashboard");  // Redirige si l'utilisateur est déjà connecté
       }
     });
 
@@ -64,7 +64,7 @@ export default function LoginPage() {
         Cookies.set("authToken", token, { expires: 7, secure: true });
 
 
-        router.push("/dashboard");
+        router.push("/admin/dashboard");
       })
       .catch((error) => {
         console.log("Erreur d'authentification Google:", error);
