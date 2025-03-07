@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import Image from "next/image";
 import { Icon } from "@iconify/react";
 import { Auth } from "@/lib/firebase";
@@ -82,9 +83,9 @@ export default function LoginPage() {
       {/* Section gauche */}
       <div className="w-full md:w-1/2 px-6 md:px-16 lg:px-32 py-12 flex flex-col space-y-6 bg-white shadow-md">
         <div className="auth-logo mb-6 flex justify-start space-x-4">
-          <a href="/">
+          <Link href="/">
             <Image src="/logo.png" alt="Logo dark" width={1000} height={1000} className="h-8 w-32" />
-          </a>
+          </Link>
         </div>
         <h1 className="text-2xl font-semibold text-gray-800 mb-4">Se connecter</h1>
         <p className="text-gray-600 text-center md:text-start">Entrez votre email et mot de passe pour accéder au panneau d&apos;administration.</p>
